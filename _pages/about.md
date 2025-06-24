@@ -5,7 +5,7 @@ permalink: /
 author_profile: true
 ---
 
-# Hi, I’m Ashwin Baduni
+### Hi, I’m Ashwin Baduni
 #### I leverage my computational mathematics expertise to design revolutionary AI algorithms that tackle the toughest challenges and push boundaries.
 
 *Turning data into insights and ideas into products.*
@@ -19,9 +19,9 @@ author_profile: true
 - Data Visualization and Exploratory Analytics
 
 ## Recognitions
-🏆 Smart India Hackathon Winner (2023)
-🤖 NIC AI Intern – developed production-grade NLP chatbot
-⚡ GMDA Full-Stack Intern – optimized government dashboard for efficiency
+- 🏆 Smart India Hackathon Winner (2023)
+- 🤖 NIC AI Intern – developed production-grade NLP chatbot
+- ⚡ GMDA Full-Stack Intern – optimized government dashboard for efficiency
 
 ---
 
