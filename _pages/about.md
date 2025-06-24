@@ -5,12 +5,13 @@ permalink: /
 author_profile: true
 ---
 
-### Hi, I’m Ashwin Baduni
-#### I leverage my computational mathematics expertise to design revolutionary AI algorithms that tackle the toughest challenges and push boundaries.
 
-*Turning data into insights and ideas into products.*
+ *Hi, I’m Ashwin Baduni*
+## I leverage my computational mathematics expertise to design revolutionary AI algorithms that tackle the toughest challenges and push boundaries.
 
-> With a B.Tech in Computational Mathematics and hands-on experience across government and industry, I build scalable, secure AI solutions that solve real problems.
+> Turning data into insights and ideas into products.
+
+## With a B.Tech in Computational Mathematics and hands-on experience across government and industry, I build scalable, secure AI solutions that solve real problems.
 
 ## Core Strengths
 - Mathematical Modeling and Analysis 
