@@ -1,7 +1,8 @@
 ---
-layout: home
+layout: archive
 title: "Bio"
 permalink: /
+author_profile: true
 ---
 
 # Hi, I’m Ashwin Baduni
