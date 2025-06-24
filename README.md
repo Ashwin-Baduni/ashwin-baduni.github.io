@@ -1,96 +1,98 @@
-# Academic Pages
-**Academic Pages is a GitHub Pages template for personal and professional portfolio-oriented websites.**
-
-![Academic Pages template example](images/homepage.png "Academic Pages template example")
-
-# Getting Started
-
-1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
-1. Click the "Use this template" button in the top right.
-1. On the "New repository" page, enter your public repository name as "[your GitHub username].github.io", which will also be your website's URL.
-1. Set site-wide configuration and add your content.
-1. Upload any files (like PDFs, .zip files, etc.) to the `files/` directory. They will appear at https://[your GitHub username].github.io/files/example.pdf.
-1. Check status by going to the repository settings, in the "GitHub pages" section
-1. (Optional) Use the Jupyter notebooks or python scripts in the `markdown_generator` folder to generate markdown files for publications and talks from a TSV file.
-
-See more info at https://academicpages.github.io/
-
-## Running locally
-
-When you are initially working on your website, it is very useful to be able to preview the changes locally before pushing them to GitHub. To work locally you will need to:
-
-1. Clone the repository and made updates as detailed above.
-
-### Using a different IDE
-1. Make sure you have ruby-dev, bundler, and nodejs installed
-    
-    On most Linux distribution and [Windows Subsystem Linux](https://learn.microsoft.com/en-us/windows/wsl/about) the command is:
-    ```bash
-    sudo apt install ruby-dev ruby-bundler nodejs
-    ```
-    If you see error `Unable to locate package ruby-bundler`, `Unable to locate package nodejs `, run the following:
-    ```bash
-    sudo apt update && sudo apt upgrade -y
-    ```
-    then try run `sudo apt install ruby-dev ruby-bundler nodejs` again.
-
-    On MacOS the commands are:
-    ```bash
-    brew install ruby
-    brew install node
-    gem install bundler
-    ```
-1. Run `bundle install` to install ruby dependencies. If you get errors, delete Gemfile.lock and try again.
-
-    If you see file permission error like `Fetching bundler-2.6.3.gem ERROR:  While executing gem (Gem::FilePermissionError) You don't have write permissions for the /var/lib/gems/3.2.0 directory.` or `Bundler::PermissionError: There was an error while trying to write to /usr/local/bin.`
-    Install Gems Locally (Recommended):
-    ```bash
-    bundle config set --local path 'vendor/bundle'
-    ```
-    then try run `bundle install` again. If succeeded, you should see a folder called `vendor` and `.bundle`.
-
-1. Run `jekyll serve -l -H localhost` to generate the HTML and serve it from `localhost:4000` the local server will automatically rebuild and refresh the pages on change.
-    You may also try `bundle exec jekyll serve -l -H localhost` to ensure jekyll to use specific dependencies on your own local machine.
-
-If you are running on Linux it may be necessary to install some additional dependencies prior to being able to run locally: `sudo apt install build-essential gcc make`
-
-## Using Docker
-
-Working from a different OS, or just want to avoid installing dependencies? You can use the provided `Dockerfile` to build a container that will run the site for you if you have [Docker](https://www.docker.com/) installed.
-
-You can build and execute the container by running the following command in the repository:
-
-```bash
-chmod -R 777 .
-docker compose up
-```
-
-You should now be able to access the website from `localhost:4000`.
-
-### Using the DevContainer in VS Code
-
-If you are using [Visual Studio Code](https://code.visualstudio.com/) you can use the [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) that comes with this Repository. Normally VS Code detects that a development coontainer configuration is available and asks you if you want to use the container. If this doesn't happen you can manually start the container by **F1->DevContainer: Reopen in Container**. This restarts your VS Code in the container and automatically hosts your academic page locally on http://localhost:4000. All changes will be updated live to that page after a few seconds.
-
-# Maintenance
-
-Bug reports and feature requests to the template should be [submitted via GitHub](https://github.com/academicpages/academicpages.github.io/issues/new/choose). For questions concerning how to style the template, please feel free to start a [new discussion on GitHub](https://github.com/academicpages/academicpages.github.io/discussions).
-
-This repository was forked (then detached) by [Stuart Geiger](https://github.com/staeiou) from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/), which is © 2016 Michael Rose and released under the MIT License (see LICENSE.md). It is currently being maintained by [Robert Zupko](https://github.com/rjzupkoii) and additional maintainers would be welcomed.
-
-## Bugfixes and enhancements
-
-If you have bugfixes and enhancements that you would like to submit as a pull request, you will need to [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) this repository as opposed to using it as a template. This will also allow you to [synchronize your copy](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) of template to your fork as well.
-
-Unfortunately, one logistical issue with a template theme like Academic Pages that makes it a little tricky to get bug fixes and updates to the core theme. If you use this template and customize it, you will probably get merge conflicts if you attempt to synchronize. If you want to save your various .yml configuration files and markdown files, you can delete the repository and fork it again. Or you can manually patch.
+# 🚀 Welcome to my digital CV!
+I'm **Ashwin Baduni** – a Computational Mathematics grad passionate about AI 🤖, data analytics 📊, and full-stack development 🌐.
 
 ---
-<div align="center">
-    
-![pages-build-deployment](https://github.com/academicpages/academicpages.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)
-[![GitHub contributors](https://img.shields.io/github/contributors/academicpages/academicpages.github.io.svg)](https://github.com/academicpages/academicpages.github.io/graphs/contributors)
-[![GitHub release](https://img.shields.io/github/v/release/academicpages/academicpages.github.io)](https://github.com/academicpages/academicpages.github.io/releases/latest)
-[![GitHub license](https://img.shields.io/github/license/academicpages/academicpages.github.io?color=blue)](https://github.com/academicpages/academicpages.github.io/blob/master/LICENSE)
 
-[![GitHub stars](https://img.shields.io/github/stars/academicpages/academicpages.github.io)](https://github.com/academicpages/academicpages.github.io)
-[![GitHub forks](https://img.shields.io/github/forks/academicpages/academicpages.github.io)](https://github.com/academicpages/academicpages.github.io/fork)
-</div>
+## 📬 Contact
+
+- 📞 +91-85279-16359  
+- 📧 baduniashwin@gmail.com  
+- [🔗 LinkedIn](https://www.linkedin.com/in/ashwinbaduni/)  
+- [💻 GitHub](https://github.com/Ashwin-Baduni)
+
+---
+
+## 🎓 Education
+
+**[Mahindra University (MU)](https://www.mahindrauniversity.edu.in/)**  
+_B.Tech in Computational Mathematics_  
+🗓️ Oct 2021 – Aug 2025
+
+---
+
+## 💼 Experience
+
+**[National Informatics Centre (NIC)](https://www.nic.in/)** | AI Software Intern  
+*Jan 2025 – April 2025*  
+- Built an AI chatbot that streamlined vehicle registration support using NLP and real-time analytics.
+- Improved backend scalability with FastAPI, ensured secure user access via CAPTCHA.
+- Boosted engagement through interactive data visualizations.
+
+**[Gurugram Metropolitan Development Authority (GMDA)](https://www.gmda.gov.in/)** | Full-Stack Intern  
+*June 2022 – Aug 2022*  
+- Revamped the UI/UX of GMDA’s internal dashboard using Bootstrap and JavaScript for a responsive, accessible experience.
+- Collaborated with backend teams to streamline data workflows, minimizing manual input and elevating efficiency.
+
+---
+
+## 🛠️ Projects
+
+- **[Building a Transformer from Scratch](https://github.com/Ashwin-Baduni/adaptive-transformer-trainer-automated)**  
+  *June 2025*  
+  Implemented a transformer model from scratch in PyTorch, faithfully reproducing the "Attention Is All You Need" architecture with custom multi-head self-attention, positional encoding, and layer normalization. Developed an automated pipeline for training, hyperparameter tuning, checkpointing, and real-time experiment tracking on large NLP datasets.
+
+- **[Graph Neural Net Comparison Toolkit](https://github.com/Ashwin-Baduni/enhanced-gnn-model-comparison-toolkit)**  
+  *May 2025*  
+  Created a toolkit for benchmarking and visualizing multiple GNN architectures, supporting standardized evaluation and plug-and-play model integration. Enabled comparative analysis across datasets with unified metrics and detailed reporting to streamline GNN research workflows.
+
+- **[AI Powered Analytics Dashboard Chatbot](https://github.com/Ashwin-Baduni/AI-Powered_Analytics_Dashboard_Chatbot)**  
+  *Jan 2025 – April 2025*  
+  Engineered an intelligent FastAPI chatbot for the [Parivahan Dashboard](https://analytics.parivahan.gov.in/analytics/publicdashboard/vahan?lang=en) that leverages quantized LLMs, adaptive data parsing, and real-time analytics to process natural language vehicle registration queries, deliver dynamic visualizations and statistical insights, and ensure security with CAPTCHA verification and response caching.
+
+- **[Video Based Motion Amplification and Vibration Analysis](https://github.com/Ashwin-Baduni/Video-Based_Motion_Amplification_and_Vibration_Analysis)**  
+  *Dec 2023*  
+  Developed an award-winning self-supervised tool for motion magnification and vibration analysis in videos, featuring targeted ROI amplification, optical flow-based processing, and support for multiple amplification settings. Integrated FFT and time-series vibration analysis, 3D graph plotting, and heatmap visualization, leveraging motion magnification techniques for non-contact diagnostics.
+
+---
+
+## 🏆 Achievements
+
+- 🥇 **Smart India Hackathon (SIH):** Winner (2023)
+- 🥈 **Indian International Model United Nations (IIMUN):** High Commendation (2017)
+- 🥉 **Scindia School Model United Nations (SCIMUN):** Special Mention (2016)
+
+---
+
+## 📜 Certifications
+
+- 🛡️ **Google Cybersecurity Professional Certificate**  
+  [Credential ID: DXRLYIKE4D2T](https://www.coursera.org/account/accomplishments/professional-cert/certificate/DXRLYIKE4D2T)
+- 📊 **IBM Data Analyst Professional Certificate**  
+  [Credential ID: 9WRKVKV2DUIH](https://www.coursera.org/account/accomplishments/professional-cert/certificate/9WRKVKV2DUIH)
+- 🏦 **IRM Enterprise Risk Management - Level 1**  
+  [Credential ID: IRMIN/L1CIM/2023/00000000000675](https://www.theirmindia.org/)
+
+---
+
+## 🧠 Skills
+
+- **Programming Languages:** C, C++, Python, Java, SQL, Rust, JavaScript, R programming, HTML
+- **AI/ML and Data Science:** PyTorch, TensorFlow, OpenCV, YOLOv5, CUDA, FastAPI, NLP, Quantized LLM inference, Real-time analytics, Data visualization, Machine Learning Algorithms, Deep Learning, Time-Series Analysis, FFT, Optical Flow, Data Engineering
+- **Development Tools:** Linux, Bootstrap, Git, GitHub, RESTful APIs, Asynchronous Programming, Version Control, UI/UX Design Principles, Jira, Asana, Slack
+- **Cloud and DevOps:** AWS, Azure, Google Cloud, Cloud Computing, API Security, DevOps (CI/CD, automation, infrastructure as code)
+- **Cybersecurity:** Cybersecurity, Secure Authentication (CAPTCHA), Network Security, Quantum Computing
+
+---
+
+## 🌱 Extracurricular Activities
+
+**Finance Representative**, Mahindra University Student Council  
+Managed end-to-end budgeting for student-led initiatives, ensuring strategic fund allocation, financial transparency, and optimal resource utilization. Also implemented structured financial reporting.
+
+**Volunteer**, Mahindra University Maths Club  
+Collaborated with peers to organize mathematics workshops and competitions, promoted analytical thinking, and contributed to fostering a vibrant mathematical community on campus.
+
+---
+
+Thanks for visiting!  
+Feel free to connect or reach out for collaborations, opportunities, or just to say hi! 👋
