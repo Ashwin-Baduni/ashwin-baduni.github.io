@@ -1,64 +1,54 @@
 ---
 layout: archive
-title: "CV"
+title: "Curriculum Vitae"
 permalink: /cv/
 author_profile: true
-redirect_from:
-  - /resume
 ---
 
-{% include base_path %}
+<div id="pdf-container"></div>
 
-Education
-======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+<p>If the PDF does not appear, <a href="{{ site.baseurl }}/files/CV.pdf">download my CV here</a>.</p>
 
-Work experience
-======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script>
+  // Set the path to the PDF worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+  // The PDF file you want to display (use your actual filename)
+  var url = '{{ site.baseurl }}/files/CV.pdf';
 
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+  // Load the PDF
+  pdfjsLib.getDocument(url).promise.then(function(pdf) {
+    var container = document.getElementById('pdf-container');
+    // Iterate through each page
+    for (var i = 1; i <= pdf.numPages; i++) {
+      pdf.getPage(i).then(function(page) {
+        var scale = 1.5;
+        var viewport = page.getViewport({ scale: scale });
 
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+        // Create a canvas for each page
+        var canvas = document.createElement('canvas');
+        canvas.className = 'pdf-page-canvas';
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        // Append canvas to container
+        container.appendChild(canvas);
+
+        // Render PDF page into canvas context
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        page.render(renderContext);
+
+        // Add a small margin between pages
+        canvas.style.marginBottom = '20px';
+      });
+    }
+  }).catch(function(error) {
+    console.error('Error loading PDF:', error);
+    document.getElementById('pdf-container').innerHTML = '<p>Error loading PDF. <a href="' + url + '">Download CV here.</a></p>';
+  });
+</script>
