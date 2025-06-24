@@ -21,29 +21,25 @@ author_profile: true
   pdfjsLib.getDocument(url).promise.then(function(pdf) {
     var container = document.getElementById('pdf-container');
     // Iterate through each page
-    for (var i = 1; i <= pdf.numPages; i++) {
+    for (let i = 1; i <= pdf.numPages; i++) {
       pdf.getPage(i).then(function(page) {
         var scale = 1.5;
         var viewport = page.getViewport({ scale: scale });
 
-        // Create a canvas for each page
         var canvas = document.createElement('canvas');
         canvas.className = 'pdf-page-canvas';
         var context = canvas.getContext('2d');
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
-        // Append canvas to container
         container.appendChild(canvas);
 
-        // Render PDF page into canvas context
         var renderContext = {
           canvasContext: context,
           viewport: viewport
         };
         page.render(renderContext);
 
-        // Add a small margin between pages
         canvas.style.marginBottom = '20px';
       });
     }
