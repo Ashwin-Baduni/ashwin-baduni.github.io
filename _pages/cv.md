@@ -7,15 +7,15 @@ author_profile: true
 
 <div id="pdf-container"></div>
 
-<p>If the PDF does not appear, <a href="{{ site.baseurl }}/files/CV.pdf">download my CV here</a>.</p>
+<p>If the PDF does not appear, <a href="https://ashwin-baduni.github.io/files/CV.pdf">download my CV here</a>.</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 <script>
   // Set the path to the PDF worker
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
 
-  // The PDF file you want to display (use your actual filename)
-  var url = '{{ site.baseurl }}/files/CV.pdf';
+  // The PDF file you want to display (full absolute path)
+  var url = 'https://ashwin-baduni.github.io/files/CV.pdf';
 
   // Load the PDF
   pdfjsLib.getDocument(url).promise.then(function(pdf) {
