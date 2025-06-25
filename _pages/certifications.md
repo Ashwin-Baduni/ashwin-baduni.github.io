@@ -8,7 +8,7 @@ author_profile: true
 ## **Google Cybersecurity Professional Certificate**
 
 - **Issued:** 2025
-- **Credential ID:** DXRLYIKE4D2T
+- **Credential ID:** [DXRLYIKE4D2T](https://www.coursera.org/account/accomplishments/professional-cert/certificate/DXRLYIKE4D2T)
 - **Description:**  
   - Comprehensive training in cybersecurity fundamentals, including network security, threat detection, incident response, and risk management.
   - Hands-on experience with security tools and best practices for protecting digital assets.
@@ -18,7 +18,7 @@ author_profile: true
 ## **IBM Data Analyst Professional Certificate**
 
 - **Issued:** 2025
-- **Credential ID:** 9WRKVKV2DUIH
+- **Credential ID:** [9WRKVKV2DUIH](https://www.coursera.org/account/accomplishments/professional-cert/certificate/9WRKVKV2DUIH)
 - **Description:**  
   - Professional certificate covering data analysis, data visualization, and data-driven decision-making.
   - Includes practical experience with data cleaning, analysis, and visualization using industry-standard tools.
