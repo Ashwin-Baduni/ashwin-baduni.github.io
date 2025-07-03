@@ -7,12 +7,12 @@ author_profile: true
 
 ## **Reinforcement Learning Algorithms**
 
-**GitHub:** [Reinforcement Learning Algorithms](https://github.com/Ashwin-Baduni/reinforcement-learning-algorithms)  
+**GitHub:** [Obstacle Avoidance and Path Planning via Reinforcement Learning](https://github.com/Ashwin-Baduni/Obstacle-Avoidance-and-Path-Planning-via-Reinforcement-Learning)  
 **Date:** July 2025
 
 - **Description:**  
-  - Implemented Q-Learning, Deep Q-Network (DQN), and Actor-Critic algorithms from scratch in Python, tested on a custom GridWorld environment.
-  - Designed a modular framework with configurable hyperparameters, real-time training visualization, and reproducible experiment tracking.
+  - Implemented a custom GridWorld environment for path planing with obstacles.
+  - Developed and trained a reinforcement learning agent through Q-Learning, Deep Q-Network (DQN), and Actor-Critic algorithms on the GridWorld environment.
   - Developed analysis tools for comparing algorithm performance and generating comprehensive training reports.
 - **Technologies:** Python, PyTorch, Reinforcement Learning, Deep Learning, GridWorld Environment
 
