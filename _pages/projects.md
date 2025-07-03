@@ -5,7 +5,7 @@ permalink: /projects/
 author_profile: true
 ---
 
-## **Reinforcement Learning Algorithms**
+## **Obstacle Avoidance and Path Planning via Reinforcement Learning**
 
 **GitHub:** [Obstacle Avoidance and Path Planning via Reinforcement Learning](https://github.com/Ashwin-Baduni/Obstacle-Avoidance-and-Path-Planning-via-Reinforcement-Learning)  
 **Date:** July 2025
