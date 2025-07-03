@@ -5,6 +5,19 @@ permalink: /projects/
 author_profile: true
 ---
 
+## **Reinforcement Learning Algorithms**
+
+**GitHub:** [Reinforcement Learning Algorithms](https://github.com/Ashwin-Baduni/reinforcement-learning-algorithms)  
+**Date:** July 2025
+
+- **Description:**  
+  - Implemented Q-Learning, Deep Q-Network (DQN), and Actor-Critic algorithms from scratch in Python, tested on a custom GridWorld environment.
+  - Designed a modular framework with configurable hyperparameters, real-time training visualization, and reproducible experiment tracking.
+  - Developed analysis tools for comparing algorithm performance and generating comprehensive training reports.
+- **Technologies:** Python, PyTorch, Reinforcement Learning, Deep Learning, GridWorld Environment
+
+---
+
 ## **Building a Transformer from Scratch**
 
 **GitHub:** [adaptive-transformer-trainer-automated](https://github.com/Ashwin-Baduni/adaptive-transformer-trainer-automated)  
