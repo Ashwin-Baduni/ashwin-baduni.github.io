@@ -5,6 +5,30 @@ permalink: /skills/
 author_profile: true
 ---
 
+## **Agentic AI & LLM Engineering**
+
+- **Agentic System Design:**
+  - Multi-step planning and execution pipelines (Planner → Executor → Summarizer)
+  - Intent routing and mode classification (conversational vs data-retrieval)
+  - Tool orchestration with standardized service interfaces
+
+- **LLM Application Infrastructure:**
+  - Structured output generation (schema-constrained JSON)
+  - Evidence-grounded generation for reliability and reduced hallucinations
+  - Prompt engineering for bounded context and consistency
+
+- **Session & State Management:**
+  - Slot extraction and parameter normalization
+  - Context carryover and conversational continuity
+  - Deterministic operations for cost/latency optimization
+
+- **Production Reliability:**
+  - Guardrails and routing optimization
+  - Observability infrastructure (tracing, metrics, diagnostics)
+  - Clear separation: normalization → planning → execution → summarization
+
+---
+
 ## **Artificial Intelligence & Machine Learning**
 
 - **Deep Learning & Neural Networks:**  
@@ -21,8 +45,10 @@ author_profile: true
 - **Natural Language Processing:**  
   - Large language models (LLMs), quantized LLM inference  
   - Chatbot development with FastAPI, real-time analytics, adaptive data parsing
-- **Computer Vision:**  
-  - Motion magnification, Eulerian video magnification, optical flow (Lucas-Kanade)  
+- **Computer Vision:**
+  - Real-time video analysis pipelines for safety-critical applications
+  - Action recognition models with temporal modeling
+  - Motion magnification, Eulerian video magnification, optical flow (Lucas-Kanade)
   - Self-supervised learning, ROI amplification, non-contact diagnostics
   - Video processing, vibration analysis, heatmap visualization
 

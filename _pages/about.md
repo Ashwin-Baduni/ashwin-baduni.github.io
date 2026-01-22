@@ -7,23 +7,22 @@ author_profile: true
 
 *Hi, I'm Ashwin Baduni*
 
-I leverage my **computational mathematics expertise** to design revolutionary AI algorithms that tackle the toughest challenges and push boundaries.
+**AI Engineer at MihawkAI**, building production agentic AI systems for enterprise applications.
 
-> Turning data into insights and ideas into products.
+I combine **computational mathematics expertise** with hands-on engineering to design and deploy AI solutions that solve critical problems at scale.
 
-With a **B.Tech in Computational Mathematics** and hands-on experience across government and industry, I build scalable, secure AI solutions that solve real problems.
+> From research to production — turning complex AI into reliable systems.
 
-### Core Strengths
-- **Mathematical Modeling and Analysis** 
-- **Deep Learning and Neural Network Design**  
-- **Full-Stack Development and Cloud Deployment**  
-- **Data Visualization and Exploratory Analytics**
+### What I Do
+- **Production Agentic AI** — Multi-stage pipelines, tool orchestration, stateful reasoning
+- **Deep Learning Architecture** — Transformers, CNNs, action recognition, temporal modeling
+- **Full-Stack ML Engineering** — End-to-end pipelines from training to production deployment
 
-### Key Achievements
-- **🏆 Smart India Hackathon Winner (2023)**
-- **🤖 NIC AI Intern** – developed production-grade NLP chatbot
-- **⚡ GMDA Full-Stack Intern** – optimized government dashboard for efficiency
+### Recent Highlights
+- **AI Engineer @ MihawkAI** — Building production agentic AI platforms
+- **Smart India Hackathon Winner (2023)** — National-level recognition for innovation
+- **NIC AI Intern** — Deployed production NLP chatbot for government services
 
 ---
 
-**Ready to collaborate? Get in touch today!**
+**Interested in collaborating? [Get in touch!](mailto:baduniashwin@gmail.com)**

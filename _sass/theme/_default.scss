@@ -1,24 +1,35 @@
 /* ==========================================================================
-   DEFAULT THEME
+   DEFAULT THEME - Modern Minimalist
    ========================================================================== */
 
-/* Color codes used for the theme */
-$gray                       : #7a8288;
-$dark-gray                  : mix(#000, $gray, 40%);
-$darker-gray                : mix(#000, $gray, 60%);
-$light-gray                 : #9ba1a6;
-$lighter-gray               : mix(#fff, $gray, 90%);
+/* Modern color palette - Blue/Slate tones */
+$primary                    : #0ea5e9;      /* Sky blue - modern tech feel */
+$primary-dark               : #0284c7;      /* Darker blue for hover */
+$primary-light              : #38bdf8;      /* Lighter blue for accents */
+
+$slate-900                  : #0f172a;      /* Deep slate - headings */
+$slate-700                  : #334155;      /* Dark slate - body text */
+$slate-500                  : #64748b;      /* Medium slate - secondary text */
+$slate-300                  : #cbd5e1;      /* Light slate - borders */
+$slate-100                  : #f1f5f9;      /* Very light - backgrounds */
+
+/* Legacy variable mappings for theme compatibility */
+$gray                       : $slate-500;
+$dark-gray                  : $slate-700;
+$darker-gray                : $slate-900;
+$light-gray                 : $slate-500;
+$lighter-gray               : $slate-100;
 
 /* Color codes used for the site */
-$danger-color               : #ee5f5b;
-$info-color                 : #2f7f93;
-$notice-color               : #7a8288;
-$success-color              : #62c462;
-$warning-color              : #f89406;
+$danger-color               : #ef4444;      /* Red */
+$info-color                 : #0ea5e9;      /* Sky blue */
+$notice-color               : $slate-500;
+$success-color              : #22c55e;      /* Green */
+$warning-color              : #f59e0b;      /* Amber */
 
 /* Other basic settings for the template */
-$border-radius              : 4px;
-$box-shadow                 : 0 1px 1px rgba(0, 0, 0, 0.125);
+$border-radius              : 6px;
+$box-shadow                 : 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
 $global-transition          : all 0.2s ease-in-out;
 $masthead-height            : 70px;
 $navicon-width              : 28px;
@@ -28,20 +39,20 @@ $sidebar-screen-min-width   : 1024px;
 
 /* Default light theme for the site */
 :root {
-    --global-base-color                 : #{$gray};
-    --global-bg-color                   : #fff;
-    --global-footer-bg-color            : #f2f3f3;
-    --global-border-color               : #{$lighter-gray};
-    --global-dark-border-color          : #bdc1c4;
-    --global-code-background-color      : #fafafa;
-    --global-code-text-color            : #{$darker-gray};
-    --global-fig-caption-color          : mix(#fff,  #{$dark-gray}, 25%);
-    --global-link-color                 : #52adc8;
-    --global-link-color-hover           : mix(#000, #2f7f93, 25%);
-    --global-link-color-visited         : mix(#fff, #2f7f93, 25%);  
-    --global-masthead-link-color        : #{$dark-gray};
-    --global-masthead-link-color-hover  : mix(#000, #{$gray}, 25%);    
-    --global-text-color                 : #{$dark-gray};
-    --global-text-color-light           : #{$light-gray};
-    --global-thead-color                : #{$lighter-gray};
+    --global-base-color                 : #{$slate-500};
+    --global-bg-color                   : #ffffff;
+    --global-footer-bg-color            : #{$slate-100};
+    --global-border-color               : #{$slate-300};
+    --global-dark-border-color          : #{$slate-300};
+    --global-code-background-color      : #{$slate-100};
+    --global-code-text-color            : #{$slate-700};
+    --global-fig-caption-color          : #{$slate-500};
+    --global-link-color                 : #{$primary};
+    --global-link-color-hover           : #{$primary-dark};
+    --global-link-color-visited         : #{$primary-dark};
+    --global-masthead-link-color        : #{$slate-700};
+    --global-masthead-link-color-hover  : #{$primary};
+    --global-text-color                 : #{$slate-700};
+    --global-text-color-light           : #{$slate-500};
+    --global-thead-color                : #{$slate-100};
 }

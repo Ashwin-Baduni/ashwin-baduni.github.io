@@ -5,6 +5,38 @@ permalink: /experience/
 author_profile: true
 ---
 
+## MihawkAI
+**AI Engineer**
+*July 2025 – Present*
+
+Building production agentic AI systems for enterprise applications.
+
+### Agentic AI Platform Development
+Designed and implemented conversational AI systems enabling natural-language interaction with complex data sources:
+
+- **Agentic Architecture:**
+  - Built dual-path intent routing (conversational vs data-retrieval execution modes)
+  - Implemented multi-stage pipelines (Planner → Executor → Summarizer) for controllable reasoning
+  - Developed stateful session management with slot extraction, normalization, and context carryover
+
+- **Tool Orchestration & Retrieval:**
+  - Architected tool-service interfaces for search and relational backend integration
+  - Designed evidence-grounded generation to minimize hallucinations via bounded context
+  - Built deterministic follow-up logic for cost and latency optimization
+
+- **Production Engineering:**
+  - Implemented structured output generation (schema-driven) for reliability
+  - Built observability infrastructure (tracing, metrics, failure mode capture)
+  - Designed guardrails to optimize resource usage across interaction turns
+
+### Computer Vision Systems
+- Developed real-time video analysis pipelines for safety-critical applications
+- Implemented action recognition models with temporal modeling
+
+**Technologies:** Python, LLM APIs, Agentic AI Patterns, Structured Generation, Tool Calling, Retrieval Systems, Production Observability
+
+---
+
 ## National Informatics Centre (NIC)
 **AI Software Intern**  
 *January 2025 – April 2025*

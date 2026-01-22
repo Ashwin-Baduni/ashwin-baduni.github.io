@@ -12,10 +12,10 @@ site_theme               : "default"
 title                    : "Ashwin Baduni"
 title_separator          : "-"
 name                     : &name "Ashwin Baduni"
-description              : &description "personal description"
+description              : &description "AI Engineer building production agentic AI systems. Expertise in LLM engineering, computer vision, and full-stack ML."
 url                      : https://ashwin-baduni.github.io # the base hostname & protocol for your site e.g. "https://[your GitHub username].github.io" or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "academicpages/academicpages.github.io"
+repository               : "Ashwin-Baduni/ashwin-baduni.github.io"
 
 # Site Author - The following control what appear as part of the author content on the side bar.
 #               If a field is blank the icon and link will not appear, otherwise it will be shown.
@@ -25,9 +25,9 @@ author:
   avatar           : "prof.jpeg" # filename of avatar image placed in /images/, e.g. "prof.jpg"
   name             : "Ashwin Baduni"
   pronouns         : # example: "she/her"  
-  bio              : #
+  bio              : "AI Engineer @ MihawkAI"
   location         : "Gurugram, India"
-  employer         : #Name
+  employer         : "MihawkAI"
   uri              : # URL
   email            : "baduniashwin@gmail.com"
   phone            : "+91-85279-16359"
