@@ -1,0 +1,286 @@
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=cyan,
+    filecolor=cyan,
+    urlcolor=cyan,
+    citecolor=cyan
+}
+
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{needspace}
+
+\input{glyphtounicode}
+
+% -------------------- FONT OPTIONS --------------------
+\usepackage{charter}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Subsection formatting
+\titleformat{\subsection}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{\hspace{-.15in}}{0em}{}[\color{black}\vspace{-8pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+% -------------------- CUSTOM COMMANDS --------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\setlength{\footskip}{4.08003pt}
+
+% -------------------- START OF DOCUMENT --------------------
+\begin{document}
+
+% -------------------- HEADING--------------------
+\begin{flushright}
+  \color{gray}
+  \item
+\end{flushright}
+
+\vspace{-5pt}
+
+\begin{center}
+    \textbf{\Huge \scshape Ashwin Baduni} \\ \vspace{7pt}
+    \small
+
+    \faIcon{phone}
+    {+91-85279-16359}
+    $  $  $  $
+    \faIcon{linkedin}
+    \href{https://www.linkedin.com/in/ashwinbaduni/}{{Linkedin}}
+    $  $  $  $
+    \faIcon{globe}
+    \href{https://ashwin-baduni.github.io/}{{Portfolio}}
+    $  $  $  $
+    \faIcon{github}
+    \href{https://github.com/Ashwin-Baduni}{{Github}}
+    $  $  $  $
+    \faIcon{envelope}
+    {{baduniashwin@gmail.com}}
+
+\end{center}
+
+% -------------------- EDUCATION --------------------
+\section{Education}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Mahindra University \footnotesize({\href{https://www.mahindrauniversity.edu.in/}{{MU}}})}
+      {Oct 2021 -- Aug 2025} {B.Tech in Computational Mathematics}{}
+
+  \resumeSubHeadingListEnd
+
+\section{Experience}
+  \resumeSubHeadingListStart
+
+         \resumeProjectHeading
+          {\textbf{MihawkAI}
+          $|$ \footnotesize\emph{AI Engineer}\vspace{8pt}}{July 2025 -- Present}
+          {\small{Architecting enterprise-grade agentic AI systems with multi-stage reasoning pipelines for automated
+          \newline decision workflows. Building intelligent query routing layers that dynamically switch between
+          \newline conversational AI and structured data retrieval. Developing real-time computer vision pipelines
+          \newline for safety-critical video monitoring and automated compliance detection.
+          }}
+
+         \resumeProjectHeading
+          {\textbf{National Informatics Centre
+          (\href{https://www.nic.in}{NIC})}
+          $|$ \footnotesize\emph{AI Software Intern}\vspace{8pt}}{Jan 2025 -- April 2025}
+          {\small{Built an AI chatbot that streamlined vehicle registration support using NLP and
+          \newline real-time analytics. Improved backend scalability with FastAPI, ensured secure user access via
+          \newline CAPTCHA, and boosted engagement through interactive data visualizations.
+          }}
+
+
+          \resumeProjectHeading
+          {\textbf{Gurugram Metropolitan Development Authority
+          (\href{https://www.gmda.gov.in/?language=en}{GMDA})}
+          $|$ \footnotesize\emph{Full-Stack Intern}\vspace{8pt}}{June 2022 -- Aug 2022}
+          {\small{Revamped the UI/UX of GMDA's internal dashboard using Bootstrap and JavaScript,
+          \newline delivering a more responsive, accessible, and cohesive user experience across platforms.
+          \newline Collaborated closely with backend teams to streamline data workflows, minimizing manual input
+          \newline and elevating operational efficiency.}}
+    \resumeSubHeadingListEnd
+
+
+
+\section{Projects}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Neural CAPTCHA Recognition System}$ $ $ $\href{https://github.com/Ashwin-Baduni/captcha-ocr-from-scratch}{\footnotesize\faIcon{link}}
+\vspace{-2pt}}{May 2025}
+{\small{
+\resumeItemListStart
+\resumeItem{Built a complete CAPTCHA recognition pipeline from scratch using PyTorch, featuring CNN-based \newline encoders (ResNet) with LSTM decoders and attention mechanisms for sequence-to-sequence learning.}
+\resumeItem{Implemented synthetic dataset generation, beam search decoding, and comprehensive evaluation \newline metrics (CER, WER) with production-ready features like checkpoint management and mixed precision training.}
+\resumeItemListEnd
+}}
+
+\resumeProjectHeading
+{\textbf{AI Powered Analytics Dashboard Chatbot}$ $ $ $\href{https://github.com/Ashwin-Baduni/AI-Powered_Analytics_Dashboard_Chatbot}{\footnotesize\faIcon{link}}
+\vspace{-2pt}}{Jan -- Apr 2025}
+{\small{
+\resumeItemListStart
+\resumeItem{Designed a multi-modal analytics system using FastAPI with 4-bit quantized LLMs (GPTQ/AWQ) for \newline efficient inference, processing natural language queries into SQL and generating dynamic visualizations.}
+\resumeItem{Built adaptive data parsing pipeline supporting CSV, Excel, and JSON with automatic schema inference, \newline statistical profiling, and outlier detection for exploratory data analysis workflows.}
+\resumeItem{Implemented response caching with LRU eviction, rate limiting, CAPTCHA verification, and real-time \newline streaming responses with Server-Sent Events for interactive dashboard experiences.}
+\resumeItemListEnd
+}}
+
+\resumeProjectHeading
+{\textbf{Video Motion Amplification and Vibration Analysis} \small{(SIH 2023 Winner)}$ $ $ $\href{https://github.com/Ashwin-Baduni/Video-Based_Motion_Amplification_and_Vibration_Analysis}{\footnotesize\faIcon{link}}
+\vspace{-2pt}}{Dec 2023}
+{\small{
+\resumeItemListStart
+\resumeItem{Developed a self-supervised Eulerian video magnification system using optical flow decomposition \newline and temporal bandpass filtering for non-contact vibration analysis in industrial predictive maintenance.}
+\resumeItem{Implemented FFT-based frequency extraction with Hamming windowing, dominant mode isolation, and \newline 3D surface visualization with interactive heatmaps for spatial vibration pattern diagnostics.}
+\resumeItem{Achieved sub-pixel motion detection (0.1mm amplitude) at 60Hz sampling, enabling equipment fault \newline detection without physical sensors—awarded 1st place among 50,000+ participants nationwide.}
+\resumeItemListEnd
+}}
+
+\resumeSubHeadingListEnd
+
+\clearpage
+\vspace*{5pt}
+
+\section{Achievements}
+  \resumeSubHeadingListStart
+
+         \resumeProjectHeading
+          {\textbf{Smart India Hackathon
+          (\href{https://sih.gov.in/sih2023-grand-finale-result}{SIH})}
+          $|$ \footnotesize\emph{Winner}\vspace{2pt}}{2023}
+
+          \resumeProjectHeading
+          {\textbf{Indian International Model United Nations
+          (\href{https://www.iimun.in/}{IIMUN})}
+          $|$ \footnotesize\emph{High Commendation}\vspace{2pt}}{2017}
+
+          \resumeProjectHeading
+          {\textbf{Scindia School Model United Nations
+          (\href{https://www.scindia.edu/}{SCIMUN})}
+          $|$ \footnotesize\emph{Special Mention}\vspace{2pt}}{2016}
+
+    \resumeSubHeadingListEnd
+
+\section{Certifications}
+  \resumeSubHeadingListStart
+
+    \resumeProjectHeading
+    {\textbf{Google Cybersecurity Professional Certificate}$ $
+    \href{https://www.coursera.org/account/accomplishments/professional-cert/certificate/DXRLYIKE4D2T}{\footnotesize\faIcon{link}}
+    $|$ \footnotesize\emph{Credential ID: DXRLYIKE4D2T}\vspace{2pt}}{2025}
+
+    \resumeProjectHeading
+    {\textbf{IBM Data Analyst Professional Certificate}$ $
+    \href{https://www.coursera.org/account/accomplishments/professional-cert/certificate/9WRKVKV2DUIH}{\footnotesize\faIcon{link}}
+    $|$ \footnotesize\emph{Credential ID: 9WRKVKV2DUIH}\vspace{2pt}}{2025}
+
+    \resumeProjectHeading
+    {\textbf{IRM Enterprise Risk Management - Level 1}$ $
+    \href{https://www.theirmindia.org/}{\footnotesize\faIcon{link}}
+    $|$ \footnotesize\emph{Credential ID: IRMIN/L1CIM/2023/00000000000675}\vspace{2pt}}{2023}
+
+  \resumeSubHeadingListEnd
+
+
+\section{Extracurricular Activities}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+          {\textbf{Mahindra University Student Council} $|$ \footnotesize\emph{Finance Representative}\vspace{8pt}}{}
+          {\small{Managed end-to-end budgeting for student-led initiatives, ensuring strategic fund allocation,
+          \newline financial transparency, and optimal resource utilization. Also implemented structured financial reporting.}}
+
+\resumeProjectHeading
+          {\textbf{Mahindra University Maths Society} $|$ \footnotesize\emph{Member}\vspace{8pt}}{}
+          {\small{Collaborated with peers to organize mathematics workshops and competitions, promoted analytical thinking, and contributed to fostering a vibrant mathematical community on campus.}}
+
+\resumeSubHeadingListEnd
+
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \textbf{Languages:} Python, C/C++, Java, JavaScript, SQL \\[2pt]
+        \textbf{AI/ML Frameworks:} PyTorch, TensorFlow, LangChain, OpenCV, CUDA \\[2pt]
+        \textbf{Deep Learning:} CNNs, LSTMs, Transformers, Attention Mechanisms, Seq2Seq, Beam Search, CTC Loss \\[2pt]
+        \textbf{Agentic \& LLM Systems:} Multi-Agent Pipelines, Quantized LLMs, RAG, Intent Routing, Tool Orchestration \\[2pt]
+        \textbf{Computer Vision:} Optical Flow, Eulerian Video Magnification, FFT Analysis, Real-time Object Detection \\[2pt]
+        \textbf{Backend \& Infrastructure:} FastAPI, Flask, Node.js, React, Docker, Git, Linux, AWS
+    }}
+\end{itemize}
+
+\end{document}
