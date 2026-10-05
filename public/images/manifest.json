@@ -1,0 +1,11 @@
+{
+  "name": "Ashwin Baduni",
+  "short_name": "Ashwin",
+  "theme_color": "#f7f4ee",
+  "background_color": "#f7f4ee",
+  "display": "browser",
+  "icons": [
+    { "src": "/images/favicon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/images/favicon-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
