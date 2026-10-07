@@ -5,12 +5,13 @@ import { useReducedMotion } from "./useReducedMotion";
 /*
   A looping demonstration that plays only while it is on screen.
   Every visit starts from the beginning: once the demo has fully left the viewport it is rebuilt,
-  paused on its first frame, and it plays again when at least 30% of it is visible. Rebuilding
+  paused on its first frame, and it plays again at its visibility threshold (30% by default). Rebuilding
   (rather than rewinding) replays exactly like the first visit. A background tab only pauses it.
 */
 export function useVisibleTimeline<T extends Element>(
   scope: RefObject<T | null>,
   build: (element: T) => gsap.core.Timeline,
+  entryRatio = 0.3,
 ) {
   const reduced = useReducedMotion();
   useGSAP(
@@ -45,13 +46,13 @@ export function useVisibleTimeline<T extends Element>(
               left = true;
               rebuild();
             }
-          } else if (entry.intersectionRatio >= 0.3) {
+          } else if (entry.intersectionRatio >= entryRatio) {
             visible = true;
             left = false;
           }
           update();
         },
-        { threshold: [0, 0.3] },
+        { threshold: [0, entryRatio] },
       );
       observer.observe(element);
       document.addEventListener("visibilitychange", update);
@@ -62,6 +63,6 @@ export function useVisibleTimeline<T extends Element>(
         restoreText();
       };
     },
-    { scope, dependencies: [reduced], revertOnUpdate: true },
+    { scope, dependencies: [reduced, entryRatio], revertOnUpdate: true },
   );
 }

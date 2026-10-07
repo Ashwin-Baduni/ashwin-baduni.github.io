@@ -15,75 +15,79 @@ const words = (text: string, className: string) =>
   ));
 export function TranscriptDemo() {
   const root = useRef<HTMLDivElement>(null);
-  useVisibleTimeline(root, (element) => {
-    const timeline = gsap.timeline({
-      repeat: -1,
-      paused: true,
-    });
-    const review = element.querySelector<HTMLElement>(".review-status")!;
-    timeline
-      .call(() => {
-        review.textContent = "Ready for practitioner review";
-      })
-      .set(element.querySelectorAll(".transcript-word,.reply-word"), {
-        opacity: 0.12,
-      })
-      .set(
-        element.querySelectorAll(
-          ".transcript-note,.transcript-approved,.transcript-saved",
-        ),
-        {
-          autoAlpha: 0,
-          y: 7,
-        },
-      )
-      .fromTo(
-        element.querySelector(".consent-line"),
-        { opacity: 0.3 },
-        { opacity: 1, duration: 0.65 },
-      )
-      .fromTo(
-        element.querySelector(".spoken-line"),
-        { opacity: 0.15 },
-        { opacity: 1, duration: 0.8 },
-        0.65,
-      )
-      .to(
-        element.querySelectorAll(".transcript-word"),
-        { opacity: 1, stagger: 0.11, duration: 0.2 },
-        1.7,
-      )
-      .to(
-        element.querySelectorAll(".reply-word"),
-        { opacity: 1, stagger: 0.11, duration: 0.2 },
-        3.6,
-      )
-      .to(
-        element.querySelector(".transcript-note"),
-        { autoAlpha: 1, y: 0, duration: 0.65 },
-        5.3,
-      )
-      .to(
-        element.querySelector(".transcript-approved"),
-        { autoAlpha: 1, y: 0, duration: 0.5 },
-        6.4,
-      )
-      .call(
-        () => {
-          review.textContent = "Reviewed by practitioner";
-        },
-        [],
-        8,
-      )
-      .to(
-        element.querySelector(".transcript-saved"),
-        { autoAlpha: 1, y: 0, duration: 0.65 },
-        8,
-      )
-      // Done once the note is saved (8.65s), then a 5 second rest.
-      .to({}, { duration: 5 }, 8.65);
-    return timeline;
-  });
+  useVisibleTimeline(
+    root,
+    (element) => {
+      const timeline = gsap.timeline({
+        repeat: -1,
+        paused: true,
+      });
+      const review = element.querySelector<HTMLElement>(".review-status")!;
+      timeline
+        .call(() => {
+          review.textContent = "Ready for practitioner review";
+        })
+        .set(element.querySelectorAll(".transcript-word,.reply-word"), {
+          opacity: 0.12,
+        })
+        .set(
+          element.querySelectorAll(
+            ".transcript-note,.transcript-approved,.transcript-saved",
+          ),
+          {
+            autoAlpha: 0,
+            y: 7,
+          },
+        )
+        .fromTo(
+          element.querySelector(".consent-line"),
+          { opacity: 0.3 },
+          { opacity: 1, duration: 0.65 },
+        )
+        .fromTo(
+          element.querySelector(".spoken-line"),
+          { opacity: 0.15 },
+          { opacity: 1, duration: 0.8 },
+          0.65,
+        )
+        .to(
+          element.querySelectorAll(".transcript-word"),
+          { opacity: 1, stagger: 0.11, duration: 0.2 },
+          1.7,
+        )
+        .to(
+          element.querySelectorAll(".reply-word"),
+          { opacity: 1, stagger: 0.11, duration: 0.2 },
+          3.6,
+        )
+        .to(
+          element.querySelector(".transcript-note"),
+          { autoAlpha: 1, y: 0, duration: 0.65 },
+          5.3,
+        )
+        .to(
+          element.querySelector(".transcript-approved"),
+          { autoAlpha: 1, y: 0, duration: 0.5 },
+          6.4,
+        )
+        .call(
+          () => {
+            review.textContent = "Reviewed by practitioner";
+          },
+          [],
+          8,
+        )
+        .to(
+          element.querySelector(".transcript-saved"),
+          { autoAlpha: 1, y: 0, duration: 0.65 },
+          8,
+        )
+        // Hold the saved note before restarting the conversation.
+        .to({}, { duration: 5 }, 8.65);
+      return timeline.timeScale(2);
+    },
+    0.15,
+  );
   return (
     <div ref={root} className="transcript-demo">
       <p className="consent-line">

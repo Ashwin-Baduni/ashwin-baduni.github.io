@@ -35,66 +35,70 @@ const examples = [
 
 export function AgentDemo() {
   const root = useRef<HTMLDivElement>(null);
-  useVisibleTimeline(root, (element) => {
-    const q = element.querySelector<HTMLElement>(".agent-q")!;
-    const answer = element.querySelector<HTMLElement>(".agent-answer")!;
-    const cells = [
-      ...element.querySelectorAll<HTMLElement>(".agent-events span"),
-    ];
-    const evidence = element.querySelector(".agent-evidence");
-    const stage = element.querySelector<HTMLElement>(".agent-stage")!;
-    const timeline = gsap.timeline({ repeat: -1, paused: true });
-    examples.forEach((example, index) => {
-      // Done once the answer is shown (4s); it rests 5 seconds, then fades for the next question.
-      const at = index * 9.35;
-      const typed = { n: 0 };
-      timeline
-        .set([evidence, answer], { autoAlpha: 0, y: 7 }, at)
-        .call(
-          () => {
-            q.textContent = "";
-            answer.textContent = example.answer;
-            stage.textContent = "Finding records";
-            example.rows.flat().forEach((value, i) => {
-              cells[i].textContent = value;
-            });
-            element.dataset.example = String(index);
-          },
-          [],
-          at,
-        )
-        .fromTo(
-          typed,
-          { n: 0 },
-          {
-            n: example.question.length,
-            duration: 1.8,
-            ease: "none",
-            onUpdate: () => {
-              q.textContent = example.question.slice(0, Math.round(typed.n));
+  useVisibleTimeline(
+    root,
+    (element) => {
+      const q = element.querySelector<HTMLElement>(".agent-q")!;
+      const answer = element.querySelector<HTMLElement>(".agent-answer")!;
+      const cells = [
+        ...element.querySelectorAll<HTMLElement>(".agent-events span"),
+      ];
+      const evidence = element.querySelector(".agent-evidence");
+      const stage = element.querySelector<HTMLElement>(".agent-stage")!;
+      const timeline = gsap.timeline({ repeat: -1, paused: true });
+      examples.forEach((example, index) => {
+        // Leave the completed answer readable before the next question.
+        const at = index * 9.35;
+        const typed = { n: 0 };
+        timeline
+          .set([evidence, answer], { autoAlpha: 0, y: 7 }, at)
+          .call(
+            () => {
+              q.textContent = "";
+              answer.textContent = example.answer;
+              stage.textContent = "Finding records";
+              example.rows.flat().forEach((value, i) => {
+                cells[i].textContent = value;
+              });
+              element.dataset.example = String(index);
             },
-          },
-          at,
-        )
-        .to(evidence, { autoAlpha: 1, y: 0, duration: 0.65 }, at + 2.1)
-        .fromTo(
-          element.querySelectorAll(".agent-event"),
-          { x: 12, opacity: 0 },
-          { x: 0, opacity: 1, stagger: 0.16, duration: 0.5 },
-          at + 2.2,
-        )
-        .call(
-          () => {
-            stage.textContent = "Answer ready";
-          },
-          [],
-          at + 3.4,
-        )
-        .to(answer, { autoAlpha: 1, y: 0, duration: 0.6 }, at + 3.4)
-        .to([evidence, answer], { autoAlpha: 0, duration: 0.35 }, at + 9);
-    });
-    return timeline;
-  });
+            [],
+            at,
+          )
+          .fromTo(
+            typed,
+            { n: 0 },
+            {
+              n: example.question.length,
+              duration: 1.8,
+              ease: "none",
+              onUpdate: () => {
+                q.textContent = example.question.slice(0, Math.round(typed.n));
+              },
+            },
+            at,
+          )
+          .to(evidence, { autoAlpha: 1, y: 0, duration: 0.65 }, at + 2.1)
+          .fromTo(
+            element.querySelectorAll(".agent-event"),
+            { x: 12, opacity: 0 },
+            { x: 0, opacity: 1, stagger: 0.16, duration: 0.5 },
+            at + 2.2,
+          )
+          .call(
+            () => {
+              stage.textContent = "Answer ready";
+            },
+            [],
+            at + 3.4,
+          )
+          .to(answer, { autoAlpha: 1, y: 0, duration: 0.6 }, at + 3.4)
+          .to([evidence, answer], { autoAlpha: 0, duration: 0.35 }, at + 9);
+      });
+      return timeline.timeScale(1.7);
+    },
+    0.15,
+  );
   return (
     <div ref={root} className="agent-demo" data-example="0">
       <div className="demo-label-row">

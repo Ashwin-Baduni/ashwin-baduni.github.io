@@ -87,9 +87,10 @@
   }
 }
 
-/* Desktop settling is controlled by useSectionScroll. Native CSS snap stays disabled. */
+/* Section animations follow the page's actual scroll position. */
 @layer components {
-  /* One snapping segment: fills the viewport on desktop, content centred. */
+  /* One segment fills the screen on desktop, content centred. svh stays fixed while a
+     phone's address bar moves, so nothing below shifts mid-scroll. */
   .segment {
     position: relative;
     display: flex;
@@ -99,7 +100,7 @@
   }
   @media (min-width: 64rem) {
     .segment {
-      min-height: 100dvh;
+      min-height: 100svh;
       padding-block: clamp(40px, 6vh, 72px);
     }
   }
@@ -444,7 +445,7 @@
 }
 .portrait-composition {
   position: relative;
-  width: min(360px, calc((100dvh - 190px) * 0.8));
+  width: min(360px, calc((100svh - 190px) * 0.8));
   margin: 18px auto;
   isolation: isolate;
 }
@@ -518,7 +519,9 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
   align-items: center;
   gap: 52px;
-  margin-top: 30px;
+}
+.focus-copy .capability-list {
+  margin-top: 26px;
 }
 .capability-list li {
   position: relative;
@@ -557,17 +560,21 @@
 .capability-active .capability-number {
   color: var(--color-sky-deep);
 }
+/* Sky blue, filling with the scroll through each chapter. --focus-progress runs from 0 to 4. */
 .capability-progress {
   position: absolute;
   top: -1px;
   left: 0;
-  height: 1px;
-  width: 0;
-  background: var(--color-pink-deep);
-  transition: width 5.6s linear;
+  width: 100%;
+  height: 2px;
+  background: var(--color-sky-deep);
+  transform-origin: left center;
+  transform: scaleX(clamp(0, calc(var(--focus-progress, 0) - var(--i, 0)), 1));
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 .capability-active .capability-progress {
-  width: 100%;
+  opacity: 1;
 }
 .capability-scene {
   position: relative;
@@ -672,11 +679,16 @@
   border-radius: 16px;
   background: var(--color-card);
 }
+.product-demo-slot {
+  display: flex;
+  min-width: 0;
+}
 .product-demo-pane {
+  flex: 1;
   padding: 23px 28px;
   min-width: 0;
 }
-.product-demo-pane + .product-demo-pane {
+.product-demo-slot + .product-demo-slot > .product-demo-pane {
   border-left: 1px solid var(--color-line);
 }
 .product-demo-heading {
@@ -1014,7 +1026,7 @@
   bottom: 16px;
   width: 1px;
   background: linear-gradient(var(--color-pink-deep), var(--color-line-strong));
-  transform-origin: bottom;
+  transform-origin: top;
 }
 .experience-row {
   position: relative;
@@ -1049,6 +1061,18 @@
 .current-role .experience-dot {
   background: var(--color-pink-deep);
   box-shadow: 0 0 0 1px #b03d6840;
+}
+/* Dots wait small until the drawing line reaches them. */
+@media (prefers-reduced-motion: no-preference) {
+  .experience-dot {
+    transition:
+      transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.3s;
+  }
+  .experience-dot:not(.is-lit) {
+    transform: scale(0.3);
+    opacity: 0.4;
+  }
 }
 .experience-detail {
   padding-bottom: 18px;
@@ -1166,7 +1190,10 @@
   border-radius: 6px;
   opacity: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgb(21 20 26 / 0.2) 0.9px, transparent 1.2px);
+  background-image: radial-gradient(
+    rgb(21 20 26 / 0.2) 0.9px,
+    transparent 1.2px
+  );
   background-size: 4px 4px;
 }
 .captcha-status {
@@ -1225,21 +1252,6 @@
   }
 }
 @media (max-width: 767px) {
-  .focus-layout {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .capability-scene {
-    max-width: 480px;
-    width: 100%;
-    margin-inline: auto;
-  }
-  .capability-list li {
-    padding: 17px 0;
-  }
-  .capability-list p {
-    max-width: 48ch;
-  }
   .product-intro {
     grid-template-columns: 1fr;
     gap: 17px;
@@ -1247,12 +1259,19 @@
   .product-summary {
     font-size: 16px;
   }
+  /* Stacked, each demo is its own card and rises into place on its own. */
   .product-demos {
     grid-template-columns: 1fr;
+    gap: 14px;
+    border: 0;
+    border-radius: 0;
+    background: none;
   }
-  .product-demo-pane + .product-demo-pane {
-    border-left: 0;
-    border-top: 1px solid var(--color-line);
+  .product-demo-pane,
+  .product-demo-slot + .product-demo-slot > .product-demo-pane {
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-card);
   }
   .product-demo-pane {
     padding: 23px 20px;
@@ -1399,54 +1418,49 @@
 .contact-actions .social-actions {
   margin-top: 25px;
 }
+/*
+  What I do: the panel holds on screen while four chapters pass with the scroll.
+  The track below it supplies the scroll distance, one step per chapter.
+*/
 .focus-sequence {
   position: relative;
+  --focus-step: 62svh;
+  --pin-pad: clamp(20px, 5svh, 64px);
 }
-.focus-desktop,
-.focus-stop {
-  display: none;
-}
-.focus-flow .section-title {
-  margin-bottom: 35px;
-}
-.focus-story {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  align-items: center;
-  gap: 44px;
-  padding: 32px 0;
-  border-top: 1px solid var(--color-line);
-}
-.focus-story-copy h3 {
-  font: 500 clamp(27px, 3vw, 36px)/1.15 var(--font-serif);
-  margin-top: 10px;
-  color: var(--color-ink-strong);
-}
-.focus-story-copy p {
-  margin-top: 14px;
-  color: var(--color-ink-mute);
-  font-size: 16px;
-  line-height: 1.65;
-  max-width: 40ch;
-}
-html[data-snap="on"] .focus-sequence {
-  height: 400dvh;
-}
-html[data-snap="on"] .focus-desktop {
-  display: flex;
+.focus-pin {
   position: sticky;
-  top: 0;
+  /* A panel taller than the screen holds with its lower edge on screen instead. */
+  top: min(0px, calc(100svh - var(--focus-panel, 0px)));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  padding-block: var(--pin-pad);
 }
-html[data-snap="on"] .focus-flow {
-  display: none;
+.focus-track {
+  height: calc(var(--focus-steps) * var(--focus-step));
 }
-html[data-snap="on"] .focus-stop {
-  display: block;
+/* Each chapter's resting point, just after its picture has fully assembled.
+   Links and scroll gravity land here. */
+.focus-stop {
   position: absolute;
   left: 0;
+  top: calc((var(--i) + 0.88) * var(--focus-step));
   width: 1px;
   height: 1px;
   pointer-events: none;
+}
+.focus-visual {
+  display: grid;
+  place-items: center;
+  height: calc(100svh - 2 * var(--pin-pad));
+  container-type: size;
+}
+.focus-visual .capability-scene {
+  width: min(100cqw, 110cqh);
+}
+.focus-now {
+  display: none;
 }
 .capability-list li > a {
   display: flex;
@@ -1457,7 +1471,7 @@ html[data-snap="on"] .focus-stop {
   transition: border-color 0.45s;
 }
 .capability-active {
-  border-top-color: var(--color-sky-deep) !important;
+  border-top-color: var(--color-sky) !important;
 }
 .capability-list a:hover h3 {
   color: var(--color-sky-deep);
@@ -1513,16 +1527,129 @@ html[data-snap="on"] .focus-stop {
   .email-copy > span:first-child {
     font-size: 11px;
   }
-  .focus-story {
-    grid-template-columns: 1fr;
-    gap: 23px;
-    padding: 30px 0;
-  }
-  .focus-story-copy p {
-    margin-top: 10px;
-  }
   .experience-row {
     padding-bottom: 24px;
+  }
+}
+/* Wide but short screens, such as laptops and phones on their side: only the current
+   chapter shows its description. */
+@media (min-width: 768px) and (max-height: 760px) {
+  .capability-list p {
+    max-height: 0;
+    margin-top: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height 0.45s var(--ease-out-expo),
+      margin-top 0.45s var(--ease-out-expo),
+      opacity 0.3s;
+  }
+  .capability-active p {
+    max-height: 7.5em;
+    margin-top: 7px;
+    opacity: 1;
+  }
+}
+@media (min-width: 768px) and (max-height: 520px) {
+  .focus-copy .capability-list {
+    margin-top: 14px;
+  }
+  .capability-list li {
+    padding: 9px 0;
+  }
+  .capability-list h3 {
+    font-size: 20px;
+  }
+}
+/* Phones and upright tablets: numbered progress bars over the current chapter, the scene
+   filling the space below. */
+@media (max-width: 767px), (max-width: 1199px) and (orientation: portrait) {
+  .focus-pin {
+    padding-block: clamp(20px, 4svh, 48px);
+  }
+  .focus-visual .capability-scene {
+    width: min(100cqw, 110cqh, 600px);
+  }
+  .focus-layout {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+  .focus-visual {
+    flex: 1 1 0;
+    min-height: 220px;
+    height: auto;
+  }
+  .focus-copy .capability-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .capability-list li,
+  .capability-list li:last-child {
+    padding: 0;
+    border: 0;
+  }
+  .capability-list li::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--color-line);
+  }
+  .capability-list li > a {
+    min-height: 44px;
+    padding-top: 12px;
+  }
+  .capability-progress {
+    top: 0;
+    z-index: 1;
+    height: 3px;
+    border-radius: 3px;
+    opacity: 1;
+  }
+  .capability-number {
+    padding-top: 0;
+  }
+  .capability-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .focus-now {
+    display: grid;
+    margin-top: 4px;
+  }
+  .focus-now > div {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .focus-now > .is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .focus-now-title {
+    width: fit-content;
+    font: 500 25px/1.2 var(--font-serif);
+    color: var(--color-ink-strong);
+    background: linear-gradient(var(--color-highlight), var(--color-highlight))
+      0 92% / 100% 35% no-repeat;
+  }
+  .focus-now-title + p {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-ink-mute);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1532,6 +1659,9 @@ html[data-snap="on"] .focus-stop {
   }
   .scene-art {
     transform: none;
+  }
+  .capability-list p {
+    transition: none !important;
   }
 }
 
@@ -1653,4 +1783,49 @@ html[data-snap="on"] .focus-stop {
     margin-top: 16px;
     padding-top: 12px;
   }
+}
+
+/* A new chapter's picture and text pop in once, with no overlap with the one before. */
+@keyframes stage-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes chapter-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes highlight-in {
+  from {
+    background-size: 0% 35%;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cap-stage.is-active {
+    animation: stage-in 0.35s ease-out;
+  }
+  .focus-now > .is-active {
+    animation: chapter-in 0.5s var(--ease-out-expo);
+  }
+  .focus-now > .is-active .focus-now-title {
+    animation: highlight-in 0.7s 0.15s ease-in-out backwards;
+  }
+}
+
+/*
+  useScrollGravity owns vertical gestures and the spring at section/chapter stops.
+  Pinch zoom and horizontal gestures remain native. Without the controller, or
+  with reduced motion enabled, the browser handles all touch scrolling normally.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  html[data-gravity="on"] [data-segment] {
+    touch-action: pan-x pinch-zoom;
+  }
+}
+
+/* Space for the final section to overshoot and return, managed by gravity. */
+#main {
+  padding-bottom: var(--gravity-tail, 0px);
 }

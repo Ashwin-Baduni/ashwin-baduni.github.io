@@ -1,11 +1,36 @@
 import { useRef } from "react";
 import { hero, person } from "@/content";
 import { useEntrance } from "@/hooks/useEntrance";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { SiteMap } from "@/components/SiteMap";
 import { ContactActions } from "@/components/ContactActions";
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  // As the introduction scrolls away, each half sinks back and fades a little, handing over
+  // to the next section. Its progress is the scroll position itself.
+  useGSAP(
+    () => {
+      if (reduced) return;
+      gsap.utils.toArray<HTMLElement>(".hero-recede").forEach((element) =>
+        gsap.to(element, {
+          y: 56,
+          scale: 0.96,
+          opacity: 0.3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: element,
+            start: "clamp(bottom 62%)",
+            end: "bottom top",
+            scrub: 0.4,
+          },
+        }),
+      );
+    },
+    { scope: root, dependencies: [reduced], revertOnUpdate: true },
+  );
   useEntrance(root, (timeline, element) => {
     timeline.fromTo(
       element.querySelector(".mark"),
@@ -23,7 +48,7 @@ export function Hero() {
       className="segment"
     >
       <div className="wrap grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-14">
-        <div className="name-fit min-w-0">
+        <div className="hero-recede name-fit min-w-0">
           <p
             data-enter="1"
             className="mb-4 font-mono text-[11.5px] tracking-[0.16em] text-sky-deep uppercase"
@@ -54,7 +79,7 @@ export function Hero() {
           </div>
         </div>
         <div data-enter="2">
-          <SiteMap className="relative aspect-[5/4] max-h-[78dvh] overflow-hidden rounded-2xl border border-line bg-card" />
+          <SiteMap className="hero-recede relative aspect-[5/4] max-h-[78svh] overflow-hidden rounded-2xl border border-line bg-card" />
         </div>
       </div>
     </section>

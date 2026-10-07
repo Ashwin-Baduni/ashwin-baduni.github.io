@@ -1,5 +1,3 @@
-import { useRef } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const phases = [
@@ -352,65 +350,16 @@ function Interface() {
 }
 const scenes = [Vision, Agent, Learning, Interface];
 
-export function CapabilityScene({ phase }: { phase: number }) {
-  const root = useRef<HTMLDivElement>(null);
+/*
+  All four chapters, stacked in one frame, with only the active one showing. How far its
+  picture has assembled, and its slow drift inside .scene-drift, follow the scroll position
+  in the "What I do" section.
+*/
+export function CapabilityScene({ active }: { active: number }) {
   const reduced = useReducedMotion();
-  const current = phases[phase];
-  const Scene = scenes[phase];
-  useGSAP(
-    () => {
-      if (reduced) return;
-      const element = root.current!;
-      const timeline = gsap.timeline({ paused: true });
-      timeline
-        .fromTo(
-          element.querySelector(".cap-stage"),
-          { opacity: 0, y: 8 },
-          { opacity: 1, y: 0, duration: 0.5, immediateRender: false },
-        )
-        .fromTo(
-          element.querySelectorAll(".scene-piece"),
-          { y: 18, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.75,
-            stagger: 0.1,
-            ease: "power2.out",
-            immediateRender: false,
-          },
-          0.05,
-        );
-      const traces = element.querySelectorAll(".scene-trace");
-      if (traces.length)
-        timeline.fromTo(
-          traces,
-          { strokeDashoffset: 24 },
-          {
-            strokeDashoffset: 0,
-            duration: 1,
-            ease: "power2.out",
-            immediateRender: false,
-          },
-          0.15,
-        );
-      ScrollTrigger.create({
-        trigger: element,
-        start: "top 95%",
-        end: "bottom 5%",
-        onEnter: () => timeline.restart(),
-        onEnterBack: () => timeline.restart(),
-        onLeave: () => timeline.progress(1).pause(),
-        onLeaveBack: () => timeline.progress(1).pause(),
-      });
-    },
-    { scope: root, dependencies: [phase, reduced], revertOnUpdate: true },
-  );
   return (
     <div
-      ref={root}
       className="capability-scene"
-      data-phase={phase}
       onPointerMove={(event) => {
         if (reduced || event.pointerType !== "mouse") return;
         const r = event.currentTarget.getBoundingClientRect();
@@ -429,21 +378,32 @@ export function CapabilityScene({ phase }: { phase: number }) {
       }}
     >
       <div className="scene-ambient" aria-hidden="true" />
-      <div key={phase} className="cap-stage is-active">
-        <div className="scene-heading">
-          <span>{current.label}</span>
-          <span>0{phase + 1} / 04</span>
-        </div>
-        <svg
-          className="scene-art"
-          viewBox="0 0 480 360"
-          role="img"
-          aria-label={current.caption}
-        >
-          <Scene />
-        </svg>
-        <p className="scene-caption">{current.caption}</p>
-      </div>
+      {phases.map((phase, index) => {
+        const Scene = scenes[index];
+        return (
+          <div
+            key={phase.label}
+            className={`cap-stage ${index === active ? "is-active" : ""}`}
+            aria-hidden={index !== active}
+          >
+            <div className="scene-heading">
+              <span>{phase.label}</span>
+              <span>0{index + 1} / 04</span>
+            </div>
+            <svg
+              className="scene-art"
+              viewBox="0 0 480 360"
+              role="img"
+              aria-label={phase.caption}
+            >
+              <g className="scene-drift">
+                <Scene />
+              </g>
+            </svg>
+            <p className="scene-caption">{phase.caption}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }

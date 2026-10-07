@@ -1,7 +1,10 @@
 import { useRef, type ReactNode } from "react";
 import { Trophy } from "@phosphor-icons/react";
 import { projects, type Project } from "@/content";
-import { useEntrance } from "@/hooks/useEntrance";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { layoutTop, revealEnd } from "@/lib/scrollGeometry";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { ArrowText } from "@/components/ui/LinkArrow";
 import {
@@ -56,8 +59,35 @@ function ProjectCard({ p, featured }: { p: Project; featured?: boolean }) {
 
 export function Projects() {
   const root = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
   const [featured, ...rest] = projects.list;
-  useEntrance(root);
+  useScrollReveal(root);
+  useGSAP(
+    () => {
+      if (reduced) return;
+      // Positions come from the still slot; the card inside it is what moves.
+      gsap.utils.toArray<HTMLElement>(".project-grow").forEach((slot) =>
+        gsap.fromTo(
+          slot.firstElementChild,
+          { y: 56, scale: 0.94 },
+          {
+            y: 0,
+            scale: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: slot,
+              start: "top bottom",
+              end: () =>
+                revealEnd(root.current!, layoutTop(slot) - innerHeight * 0.7),
+              invalidateOnRefresh: true,
+              scrub: 0.4,
+            },
+          },
+        ),
+      );
+    },
+    { scope: root, dependencies: [reduced], revertOnUpdate: true },
+  );
 
   return (
     <section
@@ -72,12 +102,16 @@ export function Projects() {
           {projects.title}
         </h2>
         <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-          <div data-enter="2" className="lg:row-span-2">
-            <ProjectCard p={featured} featured />
+          <div className="project-grow lg:row-span-2">
+            <div className="h-full">
+              <ProjectCard p={featured} featured />
+            </div>
           </div>
           {rest.map((p) => (
-            <div key={p.id} data-enter="2">
-              <ProjectCard p={p} />
+            <div key={p.id} className="project-grow" data-gravity-reading>
+              <div className="h-full">
+                <ProjectCard p={p} />
+              </div>
             </div>
           ))}
         </div>

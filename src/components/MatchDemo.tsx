@@ -40,30 +40,34 @@ function Participant({
 }
 export function MatchDemo() {
   const root = useRef<HTMLDivElement>(null);
-  useVisibleTimeline(root, (element) => {
-    const timeline = gsap.timeline({ repeat: -1, paused: true });
-    timeline
-      .fromTo(
-        element.querySelectorAll(".booking-step"),
-        { opacity: 0.18, y: 7 },
-        { opacity: 1, y: 0, duration: 0.7, stagger: 1.8 },
-      )
-      .fromTo(
-        element.querySelectorAll(".booking-connector"),
-        { scaleY: 0 },
-        { scaleY: 1, duration: 1.3, stagger: 1.8, ease: "none" },
-        0.3,
-      )
-      .fromTo(
-        element.querySelector(".call-connected"),
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.6 },
-        6.4,
-      )
-      // Done once the call connects (7s), then a 5 second rest.
-      .to({}, { duration: 5 }, 7);
-    return timeline;
-  });
+  useVisibleTimeline(
+    root,
+    (element) => {
+      const timeline = gsap.timeline({ repeat: -1, paused: true });
+      timeline
+        .fromTo(
+          element.querySelectorAll(".booking-step"),
+          { opacity: 0.18, y: 7 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 1.8 },
+        )
+        .fromTo(
+          element.querySelectorAll(".booking-connector"),
+          { scaleY: 0 },
+          { scaleY: 1, duration: 1.3, stagger: 1.8, ease: "none" },
+          0.3,
+        )
+        .fromTo(
+          element.querySelector(".call-connected"),
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.6 },
+          6.4,
+        )
+        // Hold the connected call before restarting the booking sequence.
+        .to({}, { duration: 5 }, 7);
+      return timeline.timeScale(1.85);
+    },
+    0.15,
+  );
   return (
     <div ref={root} className="booking-demo">
       <div className="booking-step">

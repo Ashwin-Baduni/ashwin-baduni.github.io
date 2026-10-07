@@ -10,65 +10,69 @@ const plates = [
 ];
 export function PlateDemo() {
   const root = useRef<HTMLDivElement>(null);
-  useVisibleTimeline(root, (element) => {
-    const record = element.querySelector<HTMLElement>(".plate-record-text")!;
-    const timeline = gsap.timeline({ repeat: -1, paused: true });
-    plates.forEach((entry, index) => {
-      // Done once "Sent for review" appears (4s), then a 5 second rest.
-      const at = index * 9;
-      timeline
-        .set(
-          element.querySelectorAll(".plate-record, .plate-review"),
-          { autoAlpha: 0, y: 8 },
-          at,
-        )
-        .call(
-          () => {
-            record.textContent = entry.record;
-            element.dataset.example = String(index);
-          },
-          [],
-          at,
-        )
-        .fromTo(
-          element.querySelectorAll(".plate-bracket"),
-          { opacity: 0, scale: 1.4 },
-          { opacity: 1, scale: 1, duration: 0.7, stagger: 0.05 },
-          at,
-        )
-        .fromTo(
-          element.querySelector(".plate-scan"),
-          { xPercent: -100 },
-          { xPercent: 600, duration: 1.8, ease: "power1.inOut" },
-          at,
-        )
-        .to(
-          element.querySelector(".plate-num"),
-          {
-            duration: 1.6,
-            scrambleText: {
-              text: entry.plate,
-              chars: "ABCDEFGHJKLMNPRSTUVWXYZ0123456789",
-              revealDelay: 0.3,
-              speed: 0.4,
+  useVisibleTimeline(
+    root,
+    (element) => {
+      const record = element.querySelector<HTMLElement>(".plate-record-text")!;
+      const timeline = gsap.timeline({ repeat: -1, paused: true });
+      plates.forEach((entry, index) => {
+        // Show the review result, then hold it before the next plate.
+        const at = index * 9;
+        timeline
+          .set(
+            element.querySelectorAll(".plate-record, .plate-review"),
+            { autoAlpha: 0, y: 8 },
+            at,
+          )
+          .call(
+            () => {
+              record.textContent = entry.record;
+              element.dataset.example = String(index);
             },
-          },
-          at + 0.25,
-        )
-        .to(
-          element.querySelector(".plate-record"),
-          { autoAlpha: 1, y: 0, duration: 0.6 },
-          at + 2,
-        )
-        .to(
-          element.querySelector(".plate-review"),
-          { autoAlpha: 1, y: 0, duration: 0.6 },
-          at + 3.4,
-        )
-        .to({}, { duration: 5 }, at + 4);
-    });
-    return timeline;
-  });
+            [],
+            at,
+          )
+          .fromTo(
+            element.querySelectorAll(".plate-bracket"),
+            { opacity: 0, scale: 1.4 },
+            { opacity: 1, scale: 1, duration: 0.7, stagger: 0.05 },
+            at,
+          )
+          .fromTo(
+            element.querySelector(".plate-scan"),
+            { xPercent: -100 },
+            { xPercent: 600, duration: 1.8, ease: "power1.inOut" },
+            at,
+          )
+          .to(
+            element.querySelector(".plate-num"),
+            {
+              duration: 1.6,
+              scrambleText: {
+                text: entry.plate,
+                chars: "ABCDEFGHJKLMNPRSTUVWXYZ0123456789",
+                revealDelay: 0.3,
+                speed: 0.4,
+              },
+            },
+            at + 0.25,
+          )
+          .to(
+            element.querySelector(".plate-record"),
+            { autoAlpha: 1, y: 0, duration: 0.6 },
+            at + 2,
+          )
+          .to(
+            element.querySelector(".plate-review"),
+            { autoAlpha: 1, y: 0, duration: 0.6 },
+            at + 3.4,
+          )
+          .to({}, { duration: 5 }, at + 4);
+      });
+      return timeline.timeScale(1.7);
+    },
+    0.15,
+  );
   return (
     <div ref={root} className="plate-demo" data-example="0">
       <div className="plate-scene">

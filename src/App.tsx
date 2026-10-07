@@ -1,4 +1,5 @@
-import { useSectionScroll } from "@/hooks/useSectionScroll";
+import { usePageScroll } from "@/hooks/usePageScroll";
+import { useScrollGravity } from "@/hooks/useScrollGravity";
 import { Hero } from "@/sections/Hero";
 import { About, Focus } from "@/sections/About";
 import { Building } from "@/sections/Building";
@@ -6,7 +7,8 @@ import { Experience } from "@/sections/Experience";
 import { Projects } from "@/sections/Projects";
 
 export default function App() {
-  useSectionScroll();
+  usePageScroll();
+  useScrollGravity();
   return (
     <>
       <a href="#about" className="skip-link">
