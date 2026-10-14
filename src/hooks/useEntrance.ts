@@ -7,17 +7,19 @@ import { useReducedMotion } from "./useReducedMotion";
   section stacked taller than a phone reveals piece by piece instead of all at once out of sight.
   Elements arriving together are staggered by their data-enter order. Coming back to an element
   plays it again, from below when scrolling down and from above when scrolling up.
-  Inside a [data-sticky] panel, positions are measured from the panel's section, which keeps its
-  place while the panel is held on screen.
   `extend` builds a one-off timeline that plays when the section itself arrives.
 */
+const order = (element: HTMLElement) => Number(element.dataset.enter);
+
 export function useEntrance(
   scope: RefObject<HTMLElement | null>,
   extend?: (tl: gsap.core.Timeline, root: HTMLElement) => void,
 ) {
   const reduced = useReducedMotion();
   const extension = useRef(extend);
-  extension.current = extend;
+  useLayoutEffect(() => {
+    extension.current = extend;
+  });
 
   useLayoutEffect(() => {
     const root = scope.current;
@@ -40,10 +42,9 @@ export function useEntrance(
       context = gsap.context(() => {
         let queue: { element: HTMLElement; direction: number }[] = [];
         let extendedTargets: Element[] = [];
-        const order = (element: HTMLElement) => Number(element.dataset.enter);
         const flush = () => {
           frame = 0;
-          const batch = queue.sort(
+          const batch = queue.toSorted(
             (a, b) =>
               order(a.element) - order(b.element) ||
               (a.element.compareDocumentPosition(b.element) &
@@ -55,10 +56,10 @@ export function useEntrance(
           batch.forEach(({ element, direction }, index) =>
             gsap.fromTo(
               element,
-              { y: direction * 24, autoAlpha: 0 },
+              { y: direction * 24, opacity: 0 },
               {
                 y: 0,
-                autoAlpha: 1,
+                opacity: 1,
                 duration: 0.85,
                 delay: index * 0.08,
                 ease: "power2.out",
@@ -81,14 +82,12 @@ export function useEntrance(
           frame ||= requestAnimationFrame(flush);
         };
         elements.forEach((element) => {
-          const trigger =
-            element.closest<HTMLElement>("[data-sticky]")?.parentElement ??
-            element;
-          // Still below the fold: wait out of sight. On screen or already passed: leave as is.
-          if (trigger.getBoundingClientRect().top > innerHeight * 0.92)
-            gsap.set(element, { autoAlpha: 0 });
+          // Still below the fold: wait out of sight (transparent, but still reachable with Tab).
+          // On screen or already passed: leave as is.
+          if (element.getBoundingClientRect().top > innerHeight * 0.92)
+            gsap.set(element, { opacity: 0 });
           ScrollTrigger.create({
-            trigger,
+            trigger: element,
             start: "top 92%",
             end: "bottom 8%",
             onEnter: () => reveal(element, 1),

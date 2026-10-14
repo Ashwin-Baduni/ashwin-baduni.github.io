@@ -27,7 +27,7 @@ export const about = {
     "Most of my work sits between the model and the person using it. I {blue:train models} that make sense of what cameras see and build agents you can simply talk to. Then I {pink:design the product} around them so it feels effortless to use.",
     "The products will keep changing as we grow. How I build them won’t. I test everything against messy reality and stay honest about its limits. And I make sure people stay in charge of the decisions that matter.",
   ],
-  focusTitle: "What I do",
+  focusTitle: "Skills",
   focus: [
     {
       area: "Computer vision",
@@ -86,7 +86,7 @@ export const building: { title: string; products: Product[] } = {
   products: [
     {
       id: "mihawk",
-      kind: "Spatial AI",
+      kind: "Startup",
       name: "MihawkAI",
       text: "MihawkAI turns the cameras a site already has into a searchable memory of everything that happens there. Our AI agent Yoru answers questions about it in plain language and shows you the events and statistics behind every answer.",
       labels: ["Attendance", "Access control", "Vehicle events"],
@@ -96,7 +96,7 @@ export const building: { title: string; products: Product[] } = {
       linkLabel: "mihawk.ai",
       parts: [
         {
-          name: "Vision",
+          name: "Vision Tech",
           text: "From a detection to a record.",
           contribution:
             "My work includes training vision models and developing detection for people, clothing, and vehicles.",
@@ -113,7 +113,7 @@ export const building: { title: string; products: Product[] } = {
     },
     {
       id: "kehsun",
-      kind: "Care",
+      kind: "Startup",
       name: "Kehsun",
       text: "Kehsun helps people find a practitioner who suits them and book a session online. For practitioners it takes care of the business side of private practice so they can spend less time on admin and more time on the work they love.",
       contribution:
@@ -150,7 +150,7 @@ export const experience: {
   title: string;
   roles: Role[];
   education: { school: string; href: string; degree: string; dates: string };
-  certificates: { name: string; href: string }[];
+  certificates: { name: string; level?: string; href: string }[];
 } = {
   title: "Experience",
   roles: [
@@ -205,7 +205,8 @@ export const experience: {
       href: "https://www.coursera.org/account/accomplishments/professional-cert/certificate/9WRKVKV2DUIH",
     },
     {
-      name: "IRM Enterprise Risk Management, Level 1",
+      name: "IRM Enterprise Risk Management",
+      level: "Level 1",
       href: "https://www.theirmindia.org/",
     },
   ],

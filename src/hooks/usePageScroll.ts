@@ -1,12 +1,13 @@
 import { useLayoutEffect } from "react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { layoutTop } from "@/lib/scrollGeometry";
 gsap.registerPlugin(ScrollToPlugin);
 
 /*
-  Keep scroll-linked motion measured against the layout and handle links within
-  the page. Gesture handling and section gravity live in useScrollGravity.
-  A click glides to its section, a shared link lands once layout has settled,
+  Wheel, trackpad and touch input remain native. useDesktopSettle may finish an idle desktop
+  wheel gesture; this hook handles deliberate navigation. It keeps motion measured against the layout and handles links within
+  the page. A click glides to its section, a shared link lands once layout has settled,
   and Back returns to the previous section.
 */
 export function usePageScroll() {
@@ -30,8 +31,18 @@ export function usePageScroll() {
       });
     };
 
-    const resolve = (id: string) =>
-      document.getElementById(id === "contact" ? "top" : id);
+    const resolve = (id: string) => {
+      const target = document.getElementById(id === "contact" ? "top" : id);
+      // A chapter of What I do shown as a plain list (short screens, reduced motion) has its
+      // own visible stand-in, since the held panel's targets are not displayed then.
+      if (target && !target.getClientRects().length)
+        return (
+          document.querySelector<HTMLElement>(
+            `[data-chapter="${CSS.escape(id)}"]`,
+          ) ?? target
+        );
+      return target;
+    };
     const fromHash = () => {
       try {
         return resolve(decodeURIComponent(location.hash.slice(1)));
@@ -42,7 +53,12 @@ export function usePageScroll() {
     const jump = () => {
       stop();
       if (!location.hash) window.scrollTo({ top: 0, behavior: "instant" });
-      else fromHash()?.scrollIntoView({ behavior: "instant", block: "start" });
+      else {
+        // Layout positions ignore the offsets of reveals still in progress.
+        const target = fromHash();
+        if (target)
+          window.scrollTo({ top: layoutTop(target), behavior: "instant" });
+      }
     };
     const click = (event: MouseEvent) => {
       const anchor = (event.target as Element).closest<HTMLAnchorElement>(
@@ -61,7 +77,7 @@ export function usePageScroll() {
       if (!target) return;
       event.preventDefault();
       history.pushState(null, "", anchor.hash);
-      const y = Math.round(target.getBoundingClientRect().top + scrollY);
+      const y = layoutTop(target);
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
         stop();
         window.scrollTo({ top: y, behavior: "instant" });
@@ -72,45 +88,39 @@ export function usePageScroll() {
         target.focus({ preventScroll: true });
     };
 
-    // Scroll positions are measured from the layout, so measure again once the web fonts are
-    // in and whenever the page changes height, such as when a lazy image arrives.
-    let height = document.documentElement.scrollHeight;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const remeasure = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        const next = document.documentElement.scrollHeight;
-        if (next === height) return;
-        height = next;
-        const y = scrollY;
-        ScrollTrigger.refresh();
-        window.scrollTo({ top: y, behavior: "instant" });
-      }, 200);
+    // Layout changes (fonts, viewport, text size) are measured by storyLayout, which refreshes
+    // the scroll animations without moving the page. Only a shared link is landed again: late
+    // font swaps can still nudge the content a few pixels, so it lands once the layout has
+    // settled and shortly after, unless the visitor has started to scroll or interact.
+    let moved = false;
+    const land = () => {
+      if (!disposed && !moved && location.hash) jump();
     };
-    const observer = new ResizeObserver(remeasure);
-    observer.observe(document.body);
-    window.addEventListener("resize", remeasure);
+    const timers: ReturnType<typeof setTimeout>[] = [];
     document.fonts.ready.then(() => {
-      if (disposed) return;
-      height = document.documentElement.scrollHeight;
-      ScrollTrigger.refresh();
-      if (location.hash) requestAnimationFrame(() => !disposed && jump());
+      if (disposed || !location.hash) return;
+      requestAnimationFrame(land);
+      timers.push(setTimeout(land, 700), setTimeout(land, 1600));
     });
-    window.addEventListener("wheel", stop, { passive: true });
-    window.addEventListener("keydown", stop);
-    window.addEventListener("touchstart", stop, { passive: true });
+    const interact = () => {
+      moved = true;
+      stop();
+    };
+    window.addEventListener("wheel", interact, { passive: true });
+    window.addEventListener("keydown", interact);
+    window.addEventListener("touchstart", interact, { passive: true });
+    window.addEventListener("pointerdown", interact, { passive: true });
     window.addEventListener("hashchange", jump);
     window.addEventListener("popstate", jump);
     document.addEventListener("click", click);
     return () => {
       disposed = true;
       stop();
-      clearTimeout(timer);
-      observer.disconnect();
-      window.removeEventListener("resize", remeasure);
-      window.removeEventListener("wheel", stop);
-      window.removeEventListener("keydown", stop);
-      window.removeEventListener("touchstart", stop);
+      timers.forEach(clearTimeout);
+      window.removeEventListener("wheel", interact);
+      window.removeEventListener("keydown", interact);
+      window.removeEventListener("touchstart", interact);
+      window.removeEventListener("pointerdown", interact);
       window.removeEventListener("hashchange", jump);
       window.removeEventListener("popstate", jump);
       document.removeEventListener("click", click);

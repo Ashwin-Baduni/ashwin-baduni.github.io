@@ -5,6 +5,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { SiteMap } from "@/components/SiteMap";
 import { ContactActions } from "@/components/ContactActions";
+import { CaretDown } from "@phosphor-icons/react";
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -13,6 +14,16 @@ export function Hero() {
   // to the next section. Its progress is the scroll position itself.
   useGSAP(
     () => {
+      gsap.fromTo(".hero-scroll-cue", { autoAlpha: 0.65 }, {
+        autoAlpha: 0,
+        ease: "none",
+        scrollTrigger: {
+          start: 0,
+          end: () => reduced ? 1 : innerHeight * 0.045,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
       if (reduced) return;
       gsap.utils.toArray<HTMLElement>(".hero-recede").forEach((element) =>
         gsap.to(element, {
@@ -43,9 +54,10 @@ export function Hero() {
     <section
       ref={root}
       id="top"
+      tabIndex={-1}
       data-segment
       aria-label="Introduction"
-      className="segment"
+      className="segment outline-none"
     >
       <div className="wrap grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-14">
         <div className="hero-recede name-fit min-w-0">
@@ -81,6 +93,10 @@ export function Hero() {
         <div data-enter="2">
           <SiteMap className="hero-recede relative aspect-[5/4] max-h-[78svh] overflow-hidden rounded-2xl border border-line bg-card" />
         </div>
+      </div>
+      <div className="hero-scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+        <CaretDown size={19} weight="regular" />
       </div>
     </section>
   );

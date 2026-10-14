@@ -14,7 +14,7 @@ const phases = [
   {
     name: "Machine learning",
     caption: "From training data to evaluated models.",
-    label: "Learning",
+    label: "Training",
   },
   {
     name: "Product engineering",
@@ -353,9 +353,16 @@ const scenes = [Vision, Agent, Learning, Interface];
 /*
   All four chapters, stacked in one frame, with only the active one showing. How far its
   picture has assembled, and its slow drift inside .scene-drift, follow the scroll position
-  in the "What I do" section.
+  in the "What I do" section; .scene-recede carries its fade at each handoff.
 */
-export function CapabilityScene({ active }: { active: number }) {
+export function CapabilityScene({
+  active,
+  only = false,
+}: {
+  active: number;
+  // Draw just the active chapter, for the plain list layout.
+  only?: boolean;
+}) {
   const reduced = useReducedMotion();
   return (
     <div
@@ -379,6 +386,7 @@ export function CapabilityScene({ active }: { active: number }) {
     >
       <div className="scene-ambient" aria-hidden="true" />
       {phases.map((phase, index) => {
+        if (only && index !== active) return null;
         const Scene = scenes[index];
         return (
           <div
@@ -388,7 +396,7 @@ export function CapabilityScene({ active }: { active: number }) {
           >
             <div className="scene-heading">
               <span>{phase.label}</span>
-              <span>0{index + 1} / 04</span>
+              <span className="scene-number" aria-label={`Chapter ${index + 1} of 4`}>0{index + 1} / 04</span>
             </div>
             <svg
               className="scene-art"
@@ -396,8 +404,10 @@ export function CapabilityScene({ active }: { active: number }) {
               role="img"
               aria-label={phase.caption}
             >
-              <g className="scene-drift">
-                <Scene />
+              <g className="scene-recede">
+                <g className="scene-drift">
+                  <Scene />
+                </g>
               </g>
             </svg>
             <p className="scene-caption">{phase.caption}</p>

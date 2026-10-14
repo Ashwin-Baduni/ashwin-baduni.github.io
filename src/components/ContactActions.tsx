@@ -28,18 +28,26 @@ export function ContactActions() {
     document.body.style.overflow = "hidden";
     element.showModal();
     element.querySelector<HTMLButtonElement>("[data-close-cv]")?.focus();
+    const opener = cvButton.current;
     return () => {
       element.close();
       document.body.style.overflow = overflow;
-      cvButton.current?.focus({ preventScroll: true });
+      opener?.focus({ preventScroll: true });
     };
   }, [open]);
   const copy = async () => {
     clearTimeout(timer.current);
+    let copied = false;
     try {
       await navigator.clipboard.writeText(person.email);
-      setStatus("Copied");
+      copied = true;
     } catch {
+      // The Clipboard API needs a secure context (an http preview over the network is not one).
+      copied = copyWithSelection(person.email);
+    }
+    if (copied) setStatus("Copied");
+    else {
+      // Leave the address selected so it can be copied by hand.
       const range = document.createRange();
       range.selectNodeContents(email.current!);
       window.getSelection()?.removeAllRanges();
@@ -127,6 +135,9 @@ export function ContactActions() {
                   </button>
                 </div>
               </header>
+              {/* No sandbox: browsers refuse to show a PDF in a sandboxed frame. The PDF is this
+                  site's own file. */}
+              {/* oxlint-disable-next-line react/iframe-missing-sandbox */}
               <iframe
                 src={`${person.cv}#view=FitH`}
                 title="Ashwin Baduni curriculum vitae PDF"
@@ -144,4 +155,34 @@ export function ContactActions() {
         )}
     </div>
   );
+}
+
+/* Compatibility fallback: copy through a temporary, read-only text field with the legacy copy
+   command, reporting whether the browser actually copied. Focus and any selection the visitor
+   had are put back afterwards. */
+function copyWithSelection(text: string) {
+  const active = document.activeElement as HTMLElement | null;
+  const selection = window.getSelection();
+  const ranges = selection ? [...Array(selection.rangeCount)].map((_, i) => selection.getRangeAt(i)) : [];
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.readOnly = true;
+  field.setAttribute("aria-hidden", "true");
+  // 16px avoids zooming on focus in iOS Safari; fixed at the top avoids scrolling.
+  field.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;pointer-events:none";
+  document.body.append(field);
+  let copied = false;
+  try {
+    field.focus({ preventScroll: true });
+    field.select();
+    field.setSelectionRange(0, text.length);
+    copied = document.execCommand("copy");
+  } catch {
+    copied = false;
+  }
+  field.remove();
+  selection?.removeAllRanges();
+  ranges.forEach((range) => selection?.addRange(range));
+  active?.focus({ preventScroll: true });
+  return copied;
 }

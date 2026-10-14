@@ -484,9 +484,11 @@ export function SiteMap({ className }: { className?: string }) {
     io.observe(wrap);
     const onVis = () => (!document.hidden && inView ? start() : stop());
     document.addEventListener("visibilitychange", onVis);
-    document.fonts?.ready.then(() => !running && frame(clock, 0));
+    let disposed = false;
+    document.fonts?.ready.then(() => !disposed && !running && frame(clock, 0));
 
     return () => {
+      disposed = true;
       stop();
       ro.disconnect();
       io.disconnect();
@@ -497,7 +499,7 @@ export function SiteMap({ className }: { className?: string }) {
   }, [reduce]);
 
   return (
-    <div ref={wrapRef} className={className} style={{ touchAction: "pan-y" }}>
+    <div ref={wrapRef} className={className} style={{ touchAction: "pan-y pinch-zoom" }}>
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block size-full"

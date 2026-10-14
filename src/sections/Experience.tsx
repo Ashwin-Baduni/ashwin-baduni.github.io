@@ -9,7 +9,7 @@ import { ArrowText } from "@/components/ui/LinkArrow";
 export function Experience() {
   const root = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { roles, education, certificates } = experience;
+  const { roles, education } = experience;
   useScrollReveal(root);
   useGSAP(
     () => {
@@ -59,9 +59,11 @@ export function Experience() {
       className="segment"
     >
       <div className="wrap">
-        <h2 id="experience-title" data-enter="1" className="section-title">
-          Experience
-        </h2>
+        <div className="handoff-lane">
+          <h2 id="experience-title" data-story-intro className="section-title">
+            Experience
+          </h2>
+        </div>
         <div className="experience-timeline">
           <div className="experience-line" aria-hidden="true" />
           <ol>
@@ -98,7 +100,7 @@ export function Experience() {
                 </div>
               </li>
             ))}
-            <li className="experience-row" data-gravity-reading>
+            <li className="experience-row">
               <p data-settle className="experience-date">
                 {education.dates}
               </p>
@@ -107,26 +109,14 @@ export function Experience() {
                 <h3>{education.degree}</h3>
                 <p>
                   <a
-                    className="link-underline"
+                    className="org-link"
                     href={education.href}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {education.school}
+                    <ArrowText>{education.school}</ArrowText>
                   </a>
                 </p>
-                <div className="experience-certificates">
-                  {certificates.map((c) => (
-                    <a
-                      key={c.name}
-                      href={c.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <ArrowText>{c.name}</ArrowText>
-                    </a>
-                  ))}
-                </div>
               </div>
             </li>
           </ol>

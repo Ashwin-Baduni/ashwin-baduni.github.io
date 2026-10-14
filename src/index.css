@@ -71,6 +71,15 @@
   ::-webkit-scrollbar-button {
     display: none;
   }
+  html[data-desktop="on"]::-webkit-scrollbar-thumb,
+  html[data-desktop="on"] body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-sky), var(--color-pink));
+  }
+  @supports not selector(::-webkit-scrollbar) {
+    html[data-desktop="on"] {
+      scrollbar-color: var(--color-sky) transparent;
+    }
+  }
   ::selection {
     background: var(--color-highlight);
     color: var(--color-ink-strong);
@@ -115,7 +124,7 @@
   .section-title {
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(32px, 3.6vw, 46px);
+    font-size: clamp(2rem, 3.6vw, 2.875rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
     color: var(--color-ink-strong);
@@ -242,8 +251,7 @@
     transition: transform 0.3s var(--ease-out-expo);
   }
   /* Inter Tight's optical centre sits slightly higher than Newsreader's. */
-  .social-actions .link-arrow,
-  .experience-certificates .link-arrow {
+  .social-actions .link-arrow {
     vertical-align: -0.06em;
   }
   a:hover .link-arrow,
@@ -308,39 +316,6 @@
 }
 .contact-actions {
   max-width: 100%;
-}
-.email-line {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: fit-content;
-  max-width: 100%;
-  border-bottom: 1px solid var(--color-line-strong);
-  padding-bottom: 12px;
-}
-.email-line > span {
-  font-family: var(--font-mono);
-  font-size: clamp(11px, 1.05vw, 13px);
-  color: var(--color-ink-strong);
-}
-.copy-action {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-width: 67px;
-  min-height: 36px;
-  padding: 6px 9px;
-  border: 1px solid var(--color-line-strong);
-  border-radius: 7px;
-  font-size: 12px;
-  background: var(--color-card);
-  cursor: pointer;
-  color: var(--color-sky-deep);
-}
-.copy-action:hover {
-  border-color: var(--color-sky-deep);
-  background: var(--color-sky-wash);
 }
 .social-actions {
   display: flex;
@@ -499,9 +474,9 @@
 }
 .about-copy {
   margin-top: 26px;
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.75;
-  color: var(--color-ink-mute);
+  color: var(--color-ink);
 }
 .about-copy p + p {
   margin-top: 20px;
@@ -513,68 +488,6 @@
 .mark-blue::before {
   background: var(--color-sky);
   opacity: 0.65;
-}
-.focus-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
-  align-items: center;
-  gap: 52px;
-}
-.focus-copy .capability-list {
-  margin-top: 26px;
-}
-.capability-list li {
-  position: relative;
-  display: flex;
-  gap: 18px;
-  padding: 19px 0;
-  border-top: 1px solid var(--color-line);
-}
-.capability-list li:last-child {
-  border-bottom: 1px solid var(--color-line);
-}
-.capability-number {
-  padding-top: 8px;
-  font: 11px var(--font-mono);
-  color: var(--color-ink-faint);
-  transition: color 0.6s;
-}
-.capability-list h3 {
-  font: 500 clamp(23px, 2.1vw, 29px)/1.2 var(--font-serif);
-  color: var(--color-ink-strong);
-  width: fit-content;
-  background: linear-gradient(var(--color-highlight), var(--color-highlight)) 0
-    92% / 0% 35% no-repeat;
-  transition: background-size 0.7s;
-}
-.capability-list p {
-  margin-top: 7px;
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: var(--color-ink-mute);
-  max-width: 40ch;
-}
-.capability-active h3 {
-  background-size: 100% 35%;
-}
-.capability-active .capability-number {
-  color: var(--color-sky-deep);
-}
-/* Sky blue, filling with the scroll through each chapter. --focus-progress runs from 0 to 4. */
-.capability-progress {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--color-sky-deep);
-  transform-origin: left center;
-  transform: scaleX(clamp(0, calc(var(--focus-progress, 0) - var(--i, 0)), 1));
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.capability-active .capability-progress {
-  opacity: 1;
 }
 .capability-scene {
   position: relative;
@@ -601,10 +514,6 @@
   visibility: hidden;
   padding: 22px;
 }
-.cap-stage.is-initial {
-  opacity: 1;
-  visibility: visible;
-}
 .scene-heading {
   display: flex;
   justify-content: space-between;
@@ -614,6 +523,9 @@
   color: var(--color-ink-mute);
 }
 .scene-heading span:first-child {
+  color: var(--color-sky-deep);
+}
+.scene-heading .scene-number {
   color: var(--color-sky-deep);
 }
 .scene-art {
@@ -635,11 +547,6 @@
   font-size: 14px;
   color: var(--color-ink-mute);
 }
-.building-heading {
-  font: 500 28px/1.1 var(--font-serif);
-  color: var(--color-ink-strong);
-  margin-bottom: 24px;
-}
 .product-intro {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr);
@@ -655,51 +562,19 @@
 }
 .product-summary {
   padding-top: 3px;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--color-ink-mute);
-}
-.product-contribution {
-  margin-top: 13px;
-  color: var(--color-ink);
-  font-size: 14px;
-}
-.product-contribution > span {
-  display: inline-block;
-  margin-right: 12px;
-  font: 10.5px var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--color-pink-deep);
-}
-.product-demos {
-  display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
-  border: 1px solid var(--color-line);
-  border-radius: 16px;
-  background: var(--color-card);
-}
-.product-demo-slot {
-  display: flex;
-  min-width: 0;
-}
-.product-demo-pane {
-  flex: 1;
-  padding: 23px 28px;
-  min-width: 0;
-}
-.product-demo-slot + .product-demo-slot > .product-demo-pane {
-  border-left: 1px solid var(--color-line);
 }
 .product-demo-heading {
   margin-bottom: 19px;
 }
 .product-demo-heading h3 {
-  font: 500 25px/1.15 var(--font-serif);
+  font: 500 1.5625rem/1.15 var(--font-serif);
   color: var(--color-ink-strong);
 }
 .product-demo-heading > p {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-ink-mute);
   margin-top: 5px;
 }
@@ -754,127 +629,6 @@
 .agent-event span:last-child {
   color: var(--color-ink-mute);
 }
-.agent-answer {
-  margin-top: 16px;
-  border-left: 2px solid var(--color-pink);
-  padding-left: 12px;
-  font-size: 15px;
-  line-height: 1.5;
-}
-.plate-scene {
-  position: relative;
-  height: 165px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 26px,
-      #e6e0d866 27px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 26px,
-      #e6e0d866 27px
-    );
-}
-.road-mark {
-  position: absolute;
-  height: 100%;
-  width: 1px;
-  background: var(--color-line-strong);
-  transform: rotate(28deg);
-  opacity: 0.45;
-}
-.road-one {
-  left: 16%;
-}
-.road-two {
-  right: 16%;
-}
-.plate-detection {
-  position: relative;
-  padding: 13px;
-  z-index: 1;
-}
-.number-plate {
-  display: flex;
-  background: #fff;
-  border: 2px solid var(--color-ink-strong);
-  border-radius: 6px;
-  box-shadow: 0 7px 18px #15141a0c;
-  overflow: hidden;
-}
-.plate-country {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  padding: 5px 4px;
-  font: 9px var(--font-mono);
-  color: white;
-  background: var(--color-ink-strong);
-}
-.plate-num {
-  font: 500 clamp(17px, 1.8vw, 25px) var(--font-mono);
-  padding: 8px 10px;
-  min-width: 12.7ch;
-  white-space: pre;
-  color: var(--color-ink-strong);
-}
-.plate-bracket {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-color: var(--color-sky-deep);
-}
-.plate-bracket.tl {
-  top: 0;
-  left: 0;
-  border-top: 1px solid;
-  border-left: 1px solid;
-  color: var(--color-sky-deep);
-}
-.plate-bracket.tr {
-  top: 0;
-  right: 0;
-  border-top: 1px solid;
-  border-right: 1px solid;
-  color: var(--color-sky-deep);
-}
-.plate-bracket.bl {
-  bottom: 0;
-  left: 0;
-  border-bottom: 1px solid;
-  border-left: 1px solid;
-  color: var(--color-sky-deep);
-}
-.plate-bracket.br {
-  bottom: 0;
-  right: 0;
-  border-bottom: 1px solid;
-  border-right: 1px solid;
-  color: var(--color-sky-deep);
-}
-.plate-scan {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 20%;
-  background: linear-gradient(90deg, transparent, #9fd3f245);
-  border-right: 1px solid #1d6aa070;
-  pointer-events: none;
-}
-.plate-scene-label {
-  position: absolute;
-  left: 10px;
-  bottom: 8px;
-  font: 9px var(--font-mono);
-  color: var(--color-pink-deep);
-}
 .plate-record {
   display: flex;
   gap: 12px;
@@ -894,32 +648,9 @@
   font-size: 14px;
   margin-top: 3px;
 }
-.plate-review {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 13px 0 0 41px;
-  color: var(--color-pink-deep);
-  font-size: 12px;
-}
 .booking-demo {
   position: relative;
   padding-top: 3px;
-}
-.booking-line {
-  position: absolute;
-  left: 17px;
-  top: 20px;
-  bottom: 69px;
-  width: 1px;
-  background: var(--color-line);
-}
-.booking-line-fill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--color-pink-deep);
-  transform-origin: top;
 }
 .booking-step {
   position: relative;
@@ -951,14 +682,6 @@
 .booking-step small {
   font-size: 12px;
   color: var(--color-ink-mute);
-}
-.booking-confirmed {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-top: 8px;
-  color: var(--color-pink-deep);
-  font-size: 13px;
 }
 .transcript-demo {
   min-height: 303px;
@@ -1106,17 +829,6 @@
 .experience-detail .tags {
   margin-top: 9px;
 }
-.experience-certificates {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px 18px;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--color-ink-mute);
-}
-.experience-certificates a {
-  display: inline-block;
-}
 .chart-question {
   font: 11.5px/1.5 var(--font-mono);
   color: var(--color-ink-mute);
@@ -1203,18 +915,11 @@
 }
 
 @media (min-width: 1024px) and (max-height: 800px) {
-  .product-demo-pane {
-    padding: 18px 24px;
-  }
   .product-demo-heading {
     margin-bottom: 14px;
   }
   .product-intro {
     margin-bottom: 22px;
-  }
-  .building-heading {
-    margin-bottom: 19px;
-    font-size: 26px;
   }
   .experience-row {
     padding-bottom: 17px;
@@ -1224,9 +929,6 @@
   }
   .experience-timeline {
     margin-top: 26px;
-  }
-  .capability-list li {
-    padding: 15px 0;
   }
 }
 @media (max-width: 1023px) {
@@ -1240,15 +942,9 @@
   .about-copy {
     max-width: 64ch;
   }
-  .focus-layout {
-    gap: 30px;
-  }
   .product-intro {
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
     gap: 24px;
-  }
-  .product-demo-pane {
-    padding: 22px;
   }
 }
 @media (max-width: 767px) {
@@ -1257,30 +953,10 @@
     gap: 17px;
   }
   .product-summary {
-    font-size: 16px;
-  }
-  /* Stacked, each demo is its own card and rises into place on its own. */
-  .product-demos {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    border: 0;
-    border-radius: 0;
-    background: none;
-  }
-  .product-demo-pane,
-  .product-demo-slot + .product-demo-slot > .product-demo-pane {
-    border: 1px solid var(--color-line);
-    border-radius: 16px;
-    background: var(--color-card);
-  }
-  .product-demo-pane {
-    padding: 23px 20px;
+    font-size: 1rem;
   }
   .product-demo-heading {
     margin-bottom: 21px;
-  }
-  .product-demo-pane.pane-0 {
-    padding-bottom: 28px;
   }
   .agent-demo {
     height: 286px;
@@ -1294,14 +970,8 @@
     font-size: 10.5px;
     grid-template-columns: 37px 1fr auto;
   }
-  .agent-answer {
-    font-size: 14px;
-  }
   .demo-label-row > :last-child {
     font-size: 9px;
-  }
-  .plate-num {
-    font-size: clamp(16px, 5.4vw, 24px);
   }
   .transcript-demo {
     min-height: 345px;
@@ -1329,9 +999,6 @@
   .experience-detail .tags {
     font-size: 10.5px;
   }
-  .experience-certificates {
-    flex-direction: column;
-  }
   .cv-dialog {
     width: 96vw;
     max-width: 96vw;
@@ -1351,16 +1018,10 @@
     display: none;
   }
   .about-copy {
-    font-size: 16px;
+    font-size: 1rem;
   }
   .social-actions {
     gap: 17px;
-  }
-  .email-line {
-    gap: 9px;
-  }
-  .email-line > span {
-    font-size: 11px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1369,17 +1030,8 @@
   *::after {
     scroll-behavior: auto !important;
   }
-  .capability-progress,
-  .capability-list h3,
   .scene-art {
     transition: none;
-  }
-  .cap-stage:not(.is-initial) {
-    visibility: hidden !important;
-    opacity: 0 !important;
-  }
-  .plate-scan {
-    display: none;
   }
   .spot-card:hover {
     transform: none;
@@ -1418,64 +1070,6 @@
 .contact-actions .social-actions {
   margin-top: 25px;
 }
-/*
-  What I do: the panel holds on screen while four chapters pass with the scroll.
-  The track below it supplies the scroll distance, one step per chapter.
-*/
-.focus-sequence {
-  position: relative;
-  --focus-step: 62svh;
-  --pin-pad: clamp(20px, 5svh, 64px);
-}
-.focus-pin {
-  position: sticky;
-  /* A panel taller than the screen holds with its lower edge on screen instead. */
-  top: min(0px, calc(100svh - var(--focus-panel, 0px)));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100svh;
-  padding-block: var(--pin-pad);
-}
-.focus-track {
-  height: calc(var(--focus-steps) * var(--focus-step));
-}
-/* Each chapter's resting point, just after its picture has fully assembled.
-   Links and scroll gravity land here. */
-.focus-stop {
-  position: absolute;
-  left: 0;
-  top: calc((var(--i) + 0.88) * var(--focus-step));
-  width: 1px;
-  height: 1px;
-  pointer-events: none;
-}
-.focus-visual {
-  display: grid;
-  place-items: center;
-  height: calc(100svh - 2 * var(--pin-pad));
-  container-type: size;
-}
-.focus-visual .capability-scene {
-  width: min(100cqw, 110cqh);
-}
-.focus-now {
-  display: none;
-}
-.capability-list li > a {
-  display: flex;
-  gap: 18px;
-  width: 100%;
-}
-.capability-list li {
-  transition: border-color 0.45s;
-}
-.capability-active {
-  border-top-color: var(--color-sky) !important;
-}
-.capability-list a:hover h3 {
-  color: var(--color-sky-deep);
-}
 .cap-stage.is-active {
   opacity: 1;
   visibility: visible;
@@ -1493,9 +1087,6 @@
   font: 500 22px/1.2 var(--font-serif);
   letter-spacing: -0.015em;
   color: var(--color-ink-strong);
-}
-.project-heading-featured h3 {
-  font-size: clamp(28px, 2.45vw, 34px);
 }
 .project-award {
   margin-bottom: 16px;
@@ -1531,127 +1122,6 @@
     padding-bottom: 24px;
   }
 }
-/* Wide but short screens, such as laptops and phones on their side: only the current
-   chapter shows its description. */
-@media (min-width: 768px) and (max-height: 760px) {
-  .capability-list p {
-    max-height: 0;
-    margin-top: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition:
-      max-height 0.45s var(--ease-out-expo),
-      margin-top 0.45s var(--ease-out-expo),
-      opacity 0.3s;
-  }
-  .capability-active p {
-    max-height: 7.5em;
-    margin-top: 7px;
-    opacity: 1;
-  }
-}
-@media (min-width: 768px) and (max-height: 520px) {
-  .focus-copy .capability-list {
-    margin-top: 14px;
-  }
-  .capability-list li {
-    padding: 9px 0;
-  }
-  .capability-list h3 {
-    font-size: 20px;
-  }
-}
-/* Phones and upright tablets: numbered progress bars over the current chapter, the scene
-   filling the space below. */
-@media (max-width: 767px), (max-width: 1199px) and (orientation: portrait) {
-  .focus-pin {
-    padding-block: clamp(20px, 4svh, 48px);
-  }
-  .focus-visual .capability-scene {
-    width: min(100cqw, 110cqh, 600px);
-  }
-  .focus-layout {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 18px;
-  }
-  .focus-visual {
-    flex: 1 1 0;
-    min-height: 220px;
-    height: auto;
-  }
-  .focus-copy .capability-list {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 8px;
-    margin-top: 16px;
-  }
-  .capability-list li,
-  .capability-list li:last-child {
-    padding: 0;
-    border: 0;
-  }
-  .capability-list li::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    border-radius: 3px;
-    background: var(--color-line);
-  }
-  .capability-list li > a {
-    min-height: 44px;
-    padding-top: 12px;
-  }
-  .capability-progress {
-    top: 0;
-    z-index: 1;
-    height: 3px;
-    border-radius: 3px;
-    opacity: 1;
-  }
-  .capability-number {
-    padding-top: 0;
-  }
-  .capability-text {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .focus-now {
-    display: grid;
-    margin-top: 4px;
-  }
-  .focus-now > div {
-    grid-area: 1 / 1;
-    opacity: 0;
-    visibility: hidden;
-  }
-  .focus-now > .is-active {
-    opacity: 1;
-    visibility: visible;
-  }
-  .focus-now-title {
-    width: fit-content;
-    font: 500 25px/1.2 var(--font-serif);
-    color: var(--color-ink-strong);
-    background: linear-gradient(var(--color-highlight), var(--color-highlight))
-      0 92% / 100% 35% no-repeat;
-  }
-  .focus-now-title + p {
-    margin-top: 6px;
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--color-ink-mute);
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .cap-stage.is-active {
     opacity: 1 !important;
@@ -1659,9 +1129,6 @@
   }
   .scene-art {
     transform: none;
-  }
-  .capability-list p {
-    transition: none !important;
   }
 }
 
@@ -1785,47 +1252,873 @@
   }
 }
 
-/* A new chapter's picture and text pop in once, with no overlap with the one before. */
-@keyframes stage-in {
-  from {
-    opacity: 0;
-  }
+/*
+  Scroll stories (storyPlan, storyLayout). The browser holds every card. Each card sits in its
+  own lane, an absolutely positioned box that ends at the story's common exit; the lane's
+  transparent spacer lets `position: sticky` lift the card. Its sticky `bottom` keeps a waiting
+  card's top at the preview line, `top` parks it, and the lane's end releases it together with
+  the rest. A sticky box moves only while its margin box stays inside its containing block's
+  content box, so every waiting room is a spacer, never a margin or padding.
+  data-stack="off" is the plain layout: normal flow, nothing held.
+  Opaque cards with a soft upward shadow, so each one reads as lying on the one before.
+*/
+:root {
+  --story-gap: clamp(1rem, 3svh, 1.5rem);
+  --story-bottom: clamp(0.75rem, 2svh, 1.125rem);
+  --story-card-gap: clamp(0.875rem, 2svh, 1.25rem);
+  --story-preview: 15svh;
+  --story-inset: max(env(safe-area-inset-top, 0px), clamp(1rem, 4svh, 2.5rem));
+  --story-pad-block: clamp(1rem, 2.5svh, 1.75rem);
+  --story-pad-inline: clamp(1rem, 5vw, 2rem);
 }
-@keyframes chapter-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
+.stack {
+  position: relative;
+  /* Keeps the introduction lane's negative margin inside the story in the plain layout. */
+  display: flow-root;
 }
-@keyframes highlight-in {
-  from {
-    background-size: 0% 35%;
-  }
+.stack-card {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+  background: var(--color-card);
+  box-shadow: 0 -10px 28px -20px #15141a40;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .cap-stage.is-active {
-    animation: stage-in 0.35s ease-out;
+.stack-lane + .stack-lane {
+  margin-top: 14px;
+}
+.stack-anchor {
+  display: none;
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+/* Introduction lanes. --reach lets the next section's introduction wait below the previous
+   story's final card, as a sticky box lifted over the spacer; its place in the flow is
+   unchanged, so after waiting it moves with its own section. */
+.stack-intro-track,
+.handoff-lane {
+  pointer-events: none;
+}
+.stack-intro-track::before,
+.handoff-lane::before {
+  content: "";
+  display: block;
+  height: var(--reach, 0px);
+}
+.stack-intro,
+.handoff-lane > * {
+  pointer-events: auto;
+}
+.stack:not([data-stack="on"]) .stack-intro-track,
+.handoff-lane {
+  margin-top: calc(-1 * var(--reach, 0px));
+}
+[data-handoff="on"] > :is(.stack-intro, [data-story-intro]) {
+  position: sticky;
+  bottom: var(--handoff-wait);
+}
+
+/* The held layout. */
+.stack[data-stack="on"] .stack-intro-track {
+  position: absolute;
+  inset: calc(-1 * var(--reach, 0px)) 0 var(--story-track-end) 0;
+  z-index: 3;
+}
+.stack[data-stack="on"] .stack-intro {
+  position: sticky;
+  top: 0;
+  /* No margin: a sticky element lets go early by its margin. */
+  margin: 0;
+}
+.pair-stack[data-stack="on"][data-arrangement="row"] .stack-intro {
+  top: var(--row-intro-offset, 0px);
+}
+.stack[data-stack="on"] .stack-cards {
+  position: relative;
+  height: var(--story-deck);
+}
+.stack[data-stack="on"] .stack-lane {
+  position: absolute;
+  inset: var(--lane-top) 0 var(--lane-end, 0px) 0;
+  margin: 0;
+  pointer-events: none;
+}
+.stack[data-stack="on"] .stack-lane::before {
+  content: "";
+  display: block;
+  height: var(--lane-hold);
+}
+.stack[data-stack="on"] .stack-card {
+  position: sticky;
+  top: var(--lane-park);
+  bottom: var(--lane-wait, auto);
+  height: var(--lane-height);
+  margin: 0;
+  overflow: hidden;
+  pointer-events: auto;
+}
+.stack[data-stack="on"] .stack-anchor {
+  display: block;
+}
+/* Short product viewports: the introduction keeps its full text in normal flow, then the
+   cards get the viewport to themselves. The same native sticky lanes still hold the cards.
+   Its incoming handoff remains browser-held; it simply does not stay pinned over the demos. */
+.stack[data-stack="on"][data-intro="flow"] .stack-intro-track {
+  position: relative;
+  inset: auto;
+  margin-top: calc(-1 * var(--reach, 0px));
+}
+.stack[data-stack="on"][data-intro="flow"] .stack-intro {
+  top: auto;
+}
+/* Stack sections: the introduction carries its own space at the top while held. */
+.stack-section {
+  padding-block: 0 clamp(0.75rem, 2svh, 1.5rem);
+}
+#experience.segment {
+  padding-top: clamp(1.5rem, 4svh, 2.5rem);
+}
+.stack-section .stack-intro {
+  padding-top: var(--story-inset);
+}
+
+/* Capability copy stays above the illustration. Reserve the tallest copy's height so
+   switching chapters never shifts the held header or the card's parking position. */
+.focus-intro-copies {
+  display: grid;
+  margin-top: 0.5rem;
+}
+.focus-intro-copy {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.focus-intro-copy.is-active {
+  visibility: visible;
+}
+.stack:not([data-stack="on"]) .focus-intro-copies {
+  display: none;
+}
+/* While held, the introduction shows the current capability's words for sighted readers, and
+   each card keeps its own title and description for assistive technology, in reading order. */
+.stack[data-stack="on"] .focus-card-copy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.focus-card {
+  padding: 0;
+}
+.focus-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: var(--story-pad-block) var(--story-pad-inline);
+}
+.focus-card-copy h3,
+.focus-intro-copy h3 {
+  width: fit-content;
+  font: 500 clamp(2rem, 3.6vw, 2.875rem)/1.08 var(--font-serif);
+  color: var(--color-ink-strong);
+  background: linear-gradient(var(--color-highlight), var(--color-highlight)) 0
+    92% / 100% 35% no-repeat;
+}
+.focus-card-copy p,
+.focus-intro-copy p {
+  margin-top: 8px;
+  max-width: 42ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-ink);
+}
+.focus-card-visual {
+  min-width: 0;
+}
+.focus-card .capability-scene {
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  aspect-ratio: auto;
+  border: 0;
+  background: none;
+}
+.focus-card .cap-stage {
+  position: relative;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+}
+.focus-card .scene-art {
+  position: static;
+  display: block;
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+.stack:not([data-stack="on"]) .focus-card .scene-art {
+  max-height: none !important;
+}
+.focus-card .scene-caption {
+  position: static;
+  min-height: 3em;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* Product cards (MihawkAI, Kehsun): heading, then the demonstration. */
+.product-card {
+  padding: 0;
+}
+.product-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: var(--story-pad-block) var(--story-pad-inline);
+}
+.product-card .product-demo-heading {
+  margin: 0;
+}
+.product-card-visual {
+  min-width: 0;
+}
+/* The looping demos reserved fixed heights; scroll-played cards size to their content. */
+.yoru-card .agent-demo {
+  height: auto;
+}
+.yoru-card .agent-question {
+  height: auto;
+  min-height: 2.7em;
+}
+.demo-card .transcript-demo {
+  min-height: 0;
+}
+
+/* The camera view in the Vision card. Line weights are in screen pixels, so the close-up
+   never thickens the drawing. */
+.mseq-camera {
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 26px, #e6e0d866 27px),
+    repeating-linear-gradient(90deg, transparent, transparent 26px, #e6e0d866 27px);
+}
+.mseq-camera svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mseq-camera :is(path, rect) {
+  vector-effect: non-scaling-stroke;
+}
+.mseq-road {
+  stroke: var(--color-line-strong);
+  stroke-width: 1;
+}
+.mseq-gate {
+  fill: var(--color-card);
+  stroke: var(--color-ink);
+  stroke-width: 1;
+}
+.mseq-gate-arm {
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.mseq-gate-stripes {
+  stroke: var(--color-pink-deep);
+  stroke-width: 2;
+}
+.mseq-car {
+  fill: #e5ecf0;
+  stroke: var(--color-ink);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+.mseq-car-glass {
+  fill: #c6dde8;
+}
+.mseq-windshield-shine {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+}
+.mseq-headlight {
+  fill: #fff;
+  stroke: #67899e;
+}
+.mseq-hood-line,
+.mseq-bumper {
+  fill: none;
+  stroke: #6c7f89;
+}
+.mseq-grille {
+  fill: #344653;
+}
+.mseq-wheel {
+  fill: var(--color-ink);
+}
+.mseq-plate > rect {
+  fill: #fff;
+  stroke: var(--color-ink);
+  stroke-width: 1;
+}
+.mseq-plate > .mseq-plate-strip {
+  fill: var(--color-ink);
+}
+.mseq-plate-num {
+  font: 500 8px var(--font-mono);
+  fill: var(--color-ink-strong);
+  white-space: pre;
+}
+.mseq-scan {
+  fill: #f5bfd070;
+  stroke: var(--color-pink-deep);
+  stroke-width: 0.5;
+  opacity: 0;
+  visibility: hidden;
+}
+.mseq-plate-box,
+.mseq-car-box {
+  fill: none;
+  stroke: var(--color-pink-deep);
+  stroke-width: 1.5;
+}
+.mseq-hud {
+  position: absolute;
+  inset: 8px 10px auto;
+  display: flex;
+  justify-content: space-between;
+  font: 9.5px var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-mute);
+}
+.mseq-hud-status {
+  display: grid;
+  gap: 4px;
+  text-align: right;
+  color: var(--color-sky-deep);
+}
+.mseq-record {
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.yoru-results .agent-event {
+  position: relative;
+  padding: 8px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  gap: 6px;
+}
+.yoru-results .agent-event + .agent-event {
+  margin-top: 3px;
+}
+.yoru-results .yoru-result-first {
+  background: var(--color-sky-wash);
+  border-color: var(--color-sky);
+}
+.yoru-results .agent-event > :nth-child(2),
+.yoru-gate {
+  color: var(--color-pink-deep);
+}
+.yoru-select-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 19px;
+  fill: var(--color-card);
+  stroke: var(--color-sky-deep);
+  stroke-width: 1.5;
+  visibility: hidden;
+}
+.yoru-history {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-line);
+}
+.yoru-history-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: 11px/1.5 var(--font-mono);
+  color: var(--color-sky-deep);
+}
+.yoru-visits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+.yoru-visits dt {
+  color: var(--color-ink-mute);
+  font-size: 11px;
+}
+.yoru-visits dd {
+  margin-top: 3px;
+  font: 500 24px/1.15 var(--font-serif);
+}
+
+/* Projects use the shared card stack, with one complete project on show at a time. */
+.project-card {
+  padding: 0;
+}
+#projects {
+  padding-bottom: 8px;
+}
+.project-card-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--story-pad-block) var(--story-pad-inline);
+}
+.project-card .project-award {
+  margin: 0;
+}
+.project-text {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-ink-mute);
+}
+/* The plain Projects list keeps its earlier spacing. */
+.project-stack:not([data-stack="on"]) .project-intro {
+  margin-bottom: var(--story-gap);
+}
+.project-stack:not([data-stack="on"]) .stack-lane + .stack-lane {
+  margin-top: var(--story-gap);
+}
+/* A held project card keeps the hover glow and border but does not lift off its place. */
+.stack[data-stack="on"] .project-card {
+  transition-property: border-color, box-shadow;
+}
+.stack[data-stack="on"] .project-card:hover {
+  transform: none;
+}
+
+/* From tablet width, cards lay out in two columns: words on the left, the picture right. */
+@media (min-width: 768px) {
+  .stack:not([data-stack="on"]) .focus-card-content {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+    gap: 40px;
+    padding: var(--story-pad-block) var(--story-pad-inline);
   }
-  .focus-now > .is-active {
-    animation: chapter-in 0.5s var(--ease-out-expo);
+  .product-card-content {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "head visual"
+      "side visual";
+    align-items: start;
+    gap: 16px 36px;
+    padding: var(--story-pad-block) var(--story-pad-inline);
   }
-  .focus-now > .is-active .focus-now-title {
-    animation: highlight-in 0.7s 0.15s ease-in-out backwards;
+  .product-card-head {
+    grid-area: head;
+  }
+  .product-card-visual {
+    grid-area: visual;
+    align-self: stretch;
+  }
+  .product-card-side {
+    grid-area: side;
+  }
+  .project-card-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "visual award"
+      "visual head"
+      "visual text";
+    align-content: center;
+    gap: 8px 36px;
+    padding: var(--story-pad-block) var(--story-pad-inline);
+  }
+  .project-card-visual {
+    grid-area: visual;
+    align-self: center;
+  }
+  .project-card .project-award {
+    grid-area: award;
+  }
+  .project-heading {
+    grid-area: head;
+  }
+  .project-text {
+    grid-area: text;
   }
 }
 
 /*
-  useScrollGravity owns vertical gestures and the spring at section/chapter stops.
-  Pinch zoom and horizontal gestures remain native. Without the controller, or
-  with reduced motion enabled, the browser handles all touch scrolling normally.
+  Products on a wide screen: both demonstrations side by side, wherever each card keeps at least
+  28em, the narrowest width at which both demonstrations stay readable (two cards and the gap:
+  57.5em). The story's own width decides, through this container query, so a narrower parent or
+  larger text changes it as well as the window; useStoryArrangement reads --story-arrangement.
+  Each card then reads top to bottom, as on a phone. Held, the row uses the stack's lanes, one
+  column each (useCardRow); plain, too short to hold or with reduced motion, the cards sit side
+  by side in normal flow, as tall as the taller one.
 */
-@media (prefers-reduced-motion: no-preference) {
-  html[data-gravity="on"] [data-segment] {
-    touch-action: pan-x pinch-zoom;
+.pair-stack {
+  --pair-gap: 1.5rem;
+  container: story-pair / inline-size;
+}
+/* In the pass that changes the arrangement, the incoming controller measures the story before it
+   has written any lanes of its own (the outgoing one has removed its lanes). For that pass the
+   lanes span the deck, so the cards are measured at their real width instead of shrinking to fit
+   their content (useStoryArrangement sets data-arranging). */
+.pair-stack[data-arranging][data-stack="on"] .stack-lane {
+  inset: var(--lane-top, 0px) 0 var(--lane-end, 0px) 0;
+}
+@container story-pair (min-width: 57.5em) {
+  .pair-stack .stack-cards {
+    --story-arrangement: row;
+  }
+  .pair-stack .product-card-content {
+    display: flex;
+    gap: 14px;
+  }
+  .pair-stack[data-stack="on"] .stack-lane:first-child {
+    right: calc(50% + var(--pair-gap) / 2);
+  }
+  .pair-stack[data-stack="on"] .stack-lane:last-child {
+    left: calc(50% + var(--pair-gap) / 2);
+  }
+  .pair-stack:not([data-stack="on"]) .stack-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--pair-gap);
+  }
+  .pair-stack:not([data-stack="on"]) .stack-lane {
+    display: grid;
+  }
+  .pair-stack:not([data-stack="on"]) .stack-lane + .stack-lane {
+    margin-top: 0;
   }
 }
 
-/* Space for the final section to overshoot and return, managed by gravity. */
-#main {
-  padding-bottom: var(--gravity-tail, 0px);
+/* Skills has one shared illustration frame on wide screens; the phone keeps its card lanes.
+   These wrappers have no box at narrow widths and cannot alter phone sticky containment. */
+.skills-stage-lane,
+.skills-stage {
+  display: contents;
+}
+.skills-menu {
+  display: none;
+}
+.focus-stack {
+  container: story-skills / inline-size;
+}
+/* The About copy's own width selects its longer desktop reading interval. */
+#about > .wrap {
+  container: story-about / inline-size;
+}
+@container story-about (min-width: 57.5em) {
+  .about-copy { --about-reading-scale: 1.3; }
+}
+@container story-skills (min-width: 57.5em) {
+  .focus-stack .stack-cards {
+    --story-arrangement: split;
+  }
+  .focus-stack[data-stack="on"] .stack-intro-track {
+    right: 60%;
+  }
+  .focus-stack[data-stack="on"] .stack-intro {
+    top: var(--skills-top, 0px);
+  }
+  .focus-stack[data-stack="on"] .focus-intro-copies {
+    display: none;
+  }
+  .focus-stack[data-stack="on"] .skills-menu {
+    display: grid;
+    margin-top: 1rem;
+  }
+  .skills-menu-item {
+    padding-block: clamp(0.75rem, 1.8svh, 1rem);
+  }
+  .skills-menu-item + .skills-menu-item {
+    border-top: 1px solid var(--color-line-strong);
+  }
+  .skills-menu-item:last-child { padding-bottom: 0; }
+  .skills-menu-item a {
+    display: block;
+    width: fit-content;
+    font: 500 clamp(1.375rem, 2.2vw, 1.625rem)/1.2 var(--font-serif);
+    color: var(--color-ink-strong);
+  }
+  .skills-menu-item a span {
+    background: linear-gradient(var(--color-highlight), var(--color-highlight)) 0 92% / 0% 35% no-repeat;
+    transition: background-size 180ms;
+  }
+  .skills-menu-item a[aria-current] span {
+    background-size: 100% 35%;
+  }
+  .skills-menu-item a:hover { color: var(--color-sky-deep); }
+  .skills-menu-detail {
+    margin-top: 0.45rem;
+    max-width: 44ch;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+  .focus-stack[data-stack="on"] .stack-cards {
+    width: 56%;
+    margin-left: 44%;
+  }
+  .focus-stack[data-stack="on"] .skills-stage-lane {
+    display: block;
+    position: absolute;
+    inset: var(--lane-top, 0px) 0 var(--lane-end, 0px);
+    pointer-events: none;
+  }
+  .focus-stack[data-stack="on"] .skills-stage-lane::before {
+    content: "";
+    display: block;
+    height: var(--lane-hold, 0px);
+  }
+  .focus-stack[data-stack="on"] .skills-stage {
+    display: block;
+    position: sticky;
+    top: var(--lane-park, 0px);
+    height: var(--lane-height, auto);
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-card);
+    box-shadow: 0 -10px 28px -20px #15141a40;
+    overflow: hidden;
+  }
+  .focus-stack[data-stack="on"] .stack-lane {
+    inset: 0;
+  }
+  .focus-stack[data-stack="on"] .stack-lane::before { display: none; }
+  .focus-stack[data-stack="on"] .stack-card {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    height: 100%;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    pointer-events: none;
+  }
+  .focus-stack[data-stack="on"] .focus-card-content {
+    height: 100%;
+    justify-content: center;
+  }
+  .focus-stack[data-stack="on"] .focus-card-visual {
+    flex: 1;
+    min-height: 0;
+  }
+  .focus-stack[data-stack="on"] :is(.capability-scene, .cap-stage) {
+    height: 100%;
+  }
+  .focus-stack[data-stack="on"] .scene-art {
+    flex: 1;
+    min-height: 0;
+    height: 0;
+    aspect-ratio: auto;
+  }
+  .focus-stack[data-stack="on"] :is(.scene-heading, .scene-caption) {
+    flex: none;
+  }
+}
+
+/* Projects has no sequential story on wide screens: show the featured project beside the
+   two smaller ones. Intrinsic grid rows grow with content and text size, so short windows
+   scroll through the complete grid without clipping or extra waiting spacers. */
+.project-stack {
+  container: story-projects / inline-size;
+}
+/* Keyboard focus can reach a card while it is still in its arrival fade. */
+.project-stack[data-arrangement="grid"] .stack-card:has(:focus-visible) {
+  opacity: 1 !important;
+}
+@container story-projects (min-width: 57.5em) {
+  .project-stack .stack-cards {
+    --story-arrangement: grid;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--story-gap);
+    align-items: stretch;
+  }
+  .project-stack:not([data-stack="on"]) .stack-lane {
+    display: grid;
+    min-width: 0;
+    margin-top: 0;
+  }
+  .project-stack:not([data-stack="on"]) .stack-lane + .stack-lane {
+    margin-top: 0;
+  }
+  .project-stack .stack-lane:first-child {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+  .project-stack .stack-lane:nth-child(n + 2) {
+    grid-column: 2;
+  }
+  .project-stack .project-card-content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .project-stack .project-card-visual {
+    align-self: stretch;
+  }
+  .project-stack .stack-lane:first-child .project-card-visual {
+    display: grid;
+    align-content: center;
+    flex: 1;
+    min-height: clamp(12rem, 28svh, 22rem);
+  }
+  .project-stack .stack-lane:first-child .project-award {
+    order: -1;
+  }
+}
+
+/* Certifications: a short closing section after Projects. */
+.certifications {
+  padding-block: 24px 28px;
+}
+/* Projects keeps its reading viewport, with the compact footer just beyond it. The final
+   settling destination is naturally clamped to the page end, not an extra full screen.
+   Content taller than the window grows naturally; phone spacing is unchanged. */
+html[data-desktop="on"] #projects {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--story-inset);
+}
+/* Settling bounces a section both ways. Moving the footer down must not extend the page;
+   clip only stops overflow, so sticky stories still stick to the viewport. */
+html[data-desktop="on"] #main {
+  overflow-y: clip;
+}
+html[data-swinging],
+html[data-swinging] body {
+  overflow-anchor: none;
+}
+html[data-desktop="on"] #certifications {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  /* The return link's entrance transform must not extend the document's scroll limit. */
+  overflow: clip;
+}
+.certification-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  font-size: 16px;
+  color: var(--color-ink-strong);
+}
+.certification-list li {
+  display: flex;
+}
+.certification-list a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  background: var(--color-card);
+  line-height: 1.45;
+  transition: border-color 0.2s;
+}
+.certification-list a > svg {
+  flex: 0 0 auto;
+  color: var(--color-sky-deep);
+}
+.certification-list a:is(:hover, :focus-visible) {
+  border-color: var(--color-sky-deep);
+}
+.back-to-top-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+.back-to-top {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 16px;
+  color: var(--color-sky-deep);
+  opacity: 0.65;
+  font: 10px/1.5 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+.back-to-top:is(:hover, :focus-visible) {
+  opacity: 1;
+}
+.back-to-top svg {
+  color: var(--color-pink-deep);
+  animation: return-cue 2.2s ease-in-out infinite;
+}
+.hero-scroll-cue {
+  position: fixed;
+  inset-inline: 0;
+  bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  pointer-events: none;
+  color: var(--color-sky-deep);
+  font: 0.625rem/1.5 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hero-scroll-cue svg {
+  color: var(--color-pink-deep);
+  animation: scroll-cue 2.2s ease-in-out infinite;
+}
+@keyframes scroll-cue {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(0.25rem); }
+}
+@keyframes return-cue {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+/* A link reached with the keyboard is fully visible even while its row is still revealing, or
+   while the hero recedes. */
+:is([data-enter], [data-settle], .hero-recede):has(:focus-visible) {
+  opacity: 1 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Text remains fully readable even when the preference changes mid-reveal. */
+  .word { opacity: 1 !important; }
+  .back-to-top svg, .hero-scroll-cue svg { animation: none; }
+}
+@media (max-width: 767px) {
+  .certification-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .certification-list a {
+    padding: 18px;
+  }
 }

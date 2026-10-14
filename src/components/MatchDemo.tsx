@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import {
   Check,
   CalendarBlank,
@@ -7,7 +6,6 @@ import {
   VideoCamera,
 } from "@phosphor-icons/react";
 import { gsap } from "@/lib/gsap";
-import { useVisibleTimeline } from "@/hooks/useVisibleTimeline";
 
 function Participant({
   name,
@@ -38,38 +36,37 @@ function Participant({
     </div>
   );
 }
+// From finding a practitioner to joining the session, played by the scroll. Without it the
+// demo shows its finished state.
+export function buildBooking(element: HTMLElement) {
+  const steps = element.querySelectorAll(".booking-step");
+  const connectors = element.querySelectorAll(".booking-connector");
+  // Initialise the whole sequence together. Future staggered steps must stay faint
+  // while the card arrives, rather than appearing finished before their turn.
+  gsap.set(steps, { opacity: 0.18, y: 7 });
+  gsap.set(connectors, { scaleY: 0 });
+  return gsap
+    .timeline({ paused: true })
+    .to(
+      steps,
+      { opacity: 1, y: 0, duration: 0.7, stagger: 1.8 },
+    )
+    .to(
+      connectors,
+      { scaleY: 1, duration: 1.3, stagger: 1.8, ease: "none" },
+      0.3,
+    )
+    .fromTo(
+      element.querySelector(".call-connected"),
+      { autoAlpha: 0 },
+      { autoAlpha: 1, duration: 0.6 },
+      6.4,
+    );
+}
+
 export function MatchDemo() {
-  const root = useRef<HTMLDivElement>(null);
-  useVisibleTimeline(
-    root,
-    (element) => {
-      const timeline = gsap.timeline({ repeat: -1, paused: true });
-      timeline
-        .fromTo(
-          element.querySelectorAll(".booking-step"),
-          { opacity: 0.18, y: 7 },
-          { opacity: 1, y: 0, duration: 0.7, stagger: 1.8 },
-        )
-        .fromTo(
-          element.querySelectorAll(".booking-connector"),
-          { scaleY: 0 },
-          { scaleY: 1, duration: 1.3, stagger: 1.8, ease: "none" },
-          0.3,
-        )
-        .fromTo(
-          element.querySelector(".call-connected"),
-          { autoAlpha: 0 },
-          { autoAlpha: 1, duration: 0.6 },
-          6.4,
-        )
-        // Hold the connected call before restarting the booking sequence.
-        .to({}, { duration: 5 }, 7);
-      return timeline.timeScale(1.85);
-    },
-    0.15,
-  );
   return (
-    <div ref={root} className="booking-demo">
+    <div className="booking-demo">
       <div className="booking-step">
         <span className="booking-icon">
           <MagnifyingGlass size={17} />

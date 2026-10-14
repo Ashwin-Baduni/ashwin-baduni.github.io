@@ -1,21 +1,51 @@
 import { useRef, type ReactNode } from "react";
 import { building, type Product, type ProductPart } from "@/content";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { layoutTop, revealEnd } from "@/lib/scrollGeometry";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { useCardStack } from "@/hooks/useCardStack";
+import { useCardRow } from "@/hooks/useCardRow";
+import { useStoryArrangement } from "@/hooks/useStoryArrangement";
 import { ArrowText } from "@/components/ui/LinkArrow";
-import { AgentDemo } from "@/components/AgentDemo";
-import { MatchDemo } from "@/components/MatchDemo";
-import { PlateDemo } from "@/components/PlateDemo";
-import { TranscriptDemo } from "@/components/TranscriptDemo";
+import {
+  VisionCard,
+  YoruCard,
+  buildVision,
+  buildYoru,
+} from "@/components/MihawkCards";
+import { MatchDemo, buildBooking } from "@/components/MatchDemo";
+import { TranscriptDemo, buildTranscript } from "@/components/TranscriptDemo";
+import { Words } from "@/components/ui/Words";
+import { gsap, useGSAP } from "@/lib/gsap";
+import { layoutTop } from "@/lib/scrollGeometry";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-const DEMOS: Record<ProductPart["demo"], () => ReactNode> = {
-  plate: () => <PlateDemo />,
-  agent: () => <AgentDemo />,
-  match: () => <MatchDemo />,
-  transcript: () => <TranscriptDemo />,
-};
+// A Kehsun card: its heading, then its demonstration.
+function DemoCard({
+  part,
+  children,
+}: {
+  part: ProductPart;
+  children: ReactNode;
+}) {
+  return (
+    <article className="stack-card product-card demo-card">
+      <div className="product-card-content">
+        <div className="product-demo-heading product-card-head">
+          <h3>{part.name}</h3>
+          <p>{part.text}</p>
+        </div>
+        <div className="product-card-visual">{children}</div>
+      </div>
+    </article>
+  );
+}
+
+/*
+  Each product is a card stack under its introduction, which stays on screen: MihawkAI's
+  Vision card, then Yoru rising over it; Kehsun's booking, then the practitioner's session
+  note. The second card covers the first completely. Each card's demonstration is played by
+  the scroll once the card has parked.
+  Where two cards stay readable side by side, each product shows a row instead,
+  and both demonstrations play together (useCardRow).
+*/
 function ProductSegment({
   product,
   first,
@@ -23,96 +53,107 @@ function ProductSegment({
   product: Product;
   first: boolean;
 }) {
-  const root = useRef<HTMLElement>(null);
+  const stack = useRef<HTMLDivElement>(null);
+  const mihawk = product.id === "mihawk";
   const reduced = useReducedMotion();
-  useScrollReveal(root);
-  // The demos rise into place with the scroll. Side by side they move as one card; stacked on
-  // a narrow screen, each one arrives on its own as it reaches the screen. Positions are read
-  // from a still slot around each moving card, so the rise ends exactly where intended.
-  useGSAP(
-    () => {
-      if (reduced) return;
-      const rise = (slot: HTMLElement) =>
-        gsap.fromTo(
-          slot.firstElementChild,
-          { y: 64, scale: 0.96 },
-          {
-            y: 0,
-            scale: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: slot,
-              start: "top bottom",
-              end: () =>
-                revealEnd(root.current!, layoutTop(slot) - innerHeight * 0.7),
-              invalidateOnRefresh: true,
-              scrub: 0.4,
-            },
-          },
+  const arranged = useStoryArrangement(stack);
+  const build = (card: HTMLElement, index: number) =>
+    mihawk
+      ? (index === 0 ? buildVision : buildYoru)(card)
+      : (index === 0 ? buildBooking : buildTranscript)(
+          card.querySelector<HTMLElement>(".product-card-visual > div")!,
         );
-      const media = gsap.matchMedia();
-      media.add("(min-width: 768px)", () => {
-        rise(root.current!.querySelector(".product-demos-slot")!);
-      });
-      media.add("(max-width: 767px)", () => {
-        root
-          .current!.querySelectorAll<HTMLElement>(".product-demo-slot")
-          .forEach(rise);
-      });
-      return () => media.revert();
-    },
-    { scope: root, dependencies: [reduced], revertOnUpdate: true },
-  );
+  useCardStack(stack, {
+    // The second card parks exactly over the first and covers it completely.
+    timing: { allow: 0.06, play: 0.8, read: 0.16, lastRead: 0.02 },
+    build,
+    arranged,
+    adaptive: true,
+  });
+  useCardRow(stack, {
+    // Both demonstrations together, then a quarter of a screen to read the completed row.
+    timing: { allow: 0.06, play: 0.9, read: 0.25 },
+    build,
+    arranged,
+  });
+  useGSAP(() => {
+    if (reduced) return;
+    const root = stack.current!;
+    const held = () => root.dataset.stack === "on" && root.dataset.intro !== "flow";
+    const copy = root.querySelector<HTMLElement>(".product-summary")!;
+    const words = copy.querySelectorAll(".word");
+    gsap.set(words, { opacity: 0.22 });
+    gsap.to(words, {
+      opacity: 1, duration: 0.1, stagger: 0.1, ease: "none",
+      scrollTrigger: {
+        trigger: root,
+        start: () => held() ? layoutTop(root) - innerHeight * 0.45 : layoutTop(copy) - innerHeight * 0.85,
+        end: () => held()
+          ? layoutTop(root) + parseFloat(root.style.getPropertyValue("--stack-lead"))
+          : layoutTop(copy) + copy.offsetHeight - innerHeight * 0.6,
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+  }, { scope: stack, dependencies: [reduced], revertOnUpdate: true });
+  const [one, two] = product.parts;
   return (
     <section
-      ref={root}
       id={first ? "building" : product.id}
       data-segment
       aria-labelledby={`${product.id}-title`}
-      className={`segment product-segment product-${product.id}`}
+      className={`stack-section product-segment product-${product.id}`}
     >
+      {/* The stack sits inside the wrap, so header and cards share its gutters. */}
       <div className="wrap">
-        <div className="product-intro">
-          <div data-enter="1">
-            <p className="kind">{product.kind}</p>
-            <h2 id={`${product.id}-title`} className="section-title">
-              <a
-                className="product-title-link"
-                href={product.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <ArrowText>{product.name}</ArrowText>
-              </a>
-            </h2>
-          </div>
-          <div data-enter="2" className="product-summary">
-            <p>{product.text}</p>
-          </div>
-        </div>
-        <div className="product-demos-slot">
-          <div className="product-demos">
-            {product.parts.map((part, i) => (
-              <div
-                className="product-demo-slot"
-                key={part.name}
-                data-gravity-reading={i > 0 ? "" : undefined}
-              >
-                <div className={`product-demo-pane pane-${i}`}>
-                  <div className="product-demo-heading">
-                    <h3>{part.name}</h3>
-                    <p>{part.text}</p>
-                  </div>
-                  {DEMOS[part.demo]()}
-                </div>
+        <div ref={stack} className="stack pair-stack">
+          <div className="stack-intro-track">
+            <div className="stack-intro product-intro" data-story-intro>
+              <div>
+                <p className="kind">{product.kind}</p>
+                <h2 id={`${product.id}-title`} className="section-title">
+                  <a
+                    className="product-title-link"
+                    href={product.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ArrowText>{product.name}</ArrowText>
+                  </a>
+                </h2>
               </div>
-            ))}
+              <div className="product-summary">
+                <p><Words text={product.text} /></p>
+              </div>
+            </div>
+          </div>
+          <div className="stack-cards">
+            {mihawk ? (
+              <>
+                <div className="stack-lane"><VisionCard part={one} /></div>
+                <div className="stack-lane"><YoruCard part={two} /></div>
+              </>
+            ) : (
+              <>
+                <div className="stack-lane">
+                  <DemoCard part={one}>
+                    <MatchDemo />
+                  </DemoCard>
+                </div>
+                <div className="stack-lane">
+                  <DemoCard part={two}>
+                    <TranscriptDemo />
+                  </DemoCard>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 export function Building() {
   return (
     <>

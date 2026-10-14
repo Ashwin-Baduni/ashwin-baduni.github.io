@@ -3,7 +3,9 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useVisibleTimeline } from "@/hooks/useVisibleTimeline";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-/* Each project visual demonstrates its subject and loops only while visible. */
+/* Each project visual demonstrates its subject and loops only while its card is visible and on
+   show: never while waiting below or covered by the next card (data-active, set by
+   useCardStack), and never in a background tab. data-playing reports the current state. */
 
 const W = 320;
 
@@ -51,15 +53,21 @@ export function WaveVisual() {
         paused: true,
       });
       let visible = false;
+      const element = root.current!;
+      const card = element.closest<HTMLElement>(".project-card");
       const update = () => {
-        if (visible && !document.hidden) {
+        const playing = visible && !document.hidden && card?.dataset.active !== "false";
+        if (playing) {
           gsap.ticker.add(tick);
           swell.play();
         } else {
           gsap.ticker.remove(tick);
           swell.pause();
         }
+        element.dataset.playing = String(playing);
       };
+      const covered = card && new MutationObserver(update);
+      covered?.observe(card!, { attributes: true, attributeFilter: ["data-active"] });
       ScrollTrigger.create({
         trigger: root.current,
         start: "top bottom",
@@ -71,8 +79,10 @@ export function WaveVisual() {
       });
       document.addEventListener("visibilitychange", update);
       return () => {
+        covered?.disconnect();
         document.removeEventListener("visibilitychange", update);
         gsap.ticker.remove(tick);
+        delete element.dataset.playing;
       };
     },
     { scope: root, dependencies: [reduce], revertOnUpdate: true },
@@ -218,6 +228,12 @@ const rounds = [
   ["Q5W8RZ", "N3J7FX"],
 ];
 const angles = [-18, 13, -11, 20, -16, 9];
+const letters = (text: string) =>
+  text.split("").map((char, i) => (
+    <span data-cycle-text className="captcha-letter" key={i}>
+      {char}
+    </span>
+  ));
 export function CaptchaVisual() {
   const root = useRef<HTMLDivElement>(null);
   useVisibleTimeline(root, (element) => {
@@ -277,12 +293,6 @@ export function CaptchaVisual() {
     });
     return timeline;
   });
-  const letters = (text: string) =>
-    text.split("").map((char, i) => (
-      <span data-cycle-text className="captcha-letter" key={i}>
-        {char}
-      </span>
-    ));
   return (
     <div ref={root} className="captcha-demo" data-example="0">
       <div className="captcha-pair" aria-hidden="true">
