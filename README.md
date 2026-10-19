@@ -1,6 +1,6 @@
 # Ashwin Baduni
 
-Personal site of Ashwin Baduni, co-founder of [MihawkAI](https://mihawk.ai).
+Personal site of Ashwin Baduni, Founding Engineer @ [MihawkAI](https://mihawk.ai).
 
 **Live:** [ashwin-baduni.github.io](https://ashwin-baduni.github.io)
 

@@ -3,7 +3,7 @@
 
 export const person = {
   name: "Ashwin Baduni",
-  role: "Co-founder at MihawkAI",
+  role: "Founding Engineer @ MihawkAI",
   email: "baduniashwin@gmail.com",
   cv: "/files/CV.pdf",
   linkedin: "https://www.linkedin.com/in/ashwinbaduni/",
@@ -23,7 +23,7 @@ export const about = {
   title: "About me",
   // {blue:…} and {pink:…} mark the highlighted phrases: blue for the AI, pink for the product.
   paragraphs: [
-    "I’m a co-founder of MihawkAI. I got into AI because I wanted to build things that solve problems people actually have.",
+    "I’m a Founding Engineer at MihawkAI. I got into AI because I wanted to build things that solve problems people actually have.",
     "Most of my work sits between the model and the person using it. I {blue:train models} that make sense of what cameras see and build agents you can simply talk to. Then I {pink:design the product} around them so it feels effortless to use.",
     "The products will keep changing as we grow. How I build them won’t. I test everything against messy reality and stay honest about its limits. And I make sure people stay in charge of the decisions that matter.",
   ],
@@ -157,7 +157,7 @@ export const experience: {
     {
       org: "MihawkAI",
       href: "https://mihawk.ai",
-      title: "Co-founder",
+      title: "Founding Engineer",
       dates: "2025 - Present",
       text: "Part of the founding team deciding what we build next. My work spans the AI underneath our products and the experience people see on top.",
       tags: [
